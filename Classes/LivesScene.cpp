@@ -1,16 +1,18 @@
 #include <string>
-#include <iostream>
 #include "LivesScene.h"
 #include "GameData.h"
 #include "TestScene.h"
 
-USING_NS_CC;
+using namespace cocos2d;
+using namespace std;
 
 #define TEST 9999
 
-using namespace std;
-
 static Size visSize;
+
+extern int mario_lives;
+extern int mission;
+extern int specialSceneScore; //隐藏结局点数
 
 Scene* LivesScene::createScene()
 {
@@ -22,7 +24,6 @@ Scene* LivesScene::createScene()
 
 bool LivesScene::init()
 {
-
 	if (!Layer::init())
 	{
 		return false;
@@ -33,23 +34,21 @@ bool LivesScene::init()
 	string string_mario_lives = to_string(mario_lives);
 
 	auto pic_lives = Sprite::create("res/PICTURE/lives.png");
-	auto label_lives = Label::create("x"+string_mario_lives,"NewSuperMarioFontU.ttf",80);
+	auto label_lives = Label::create("x" + string_mario_lives, "NewSuperMarioFontU.ttf", 80);
 	label_lives->setAnchorPoint(Vec2(0, 0.5));
-	
+
 	pic_lives->setPosition(Point(visSize.width / 2 - 50, visSize.height / 2));
 	label_lives->setPosition(Point(visSize.width * 0.5, visSize.height / 2));
-
 
 	this->addChild(label_lives);
 	this->addChild(pic_lives);
 
-
-	this->scheduleOnce(CC_CALLBACK_1(LivesScene::missionJump, this), 3.f, "jumpToMissionScene");
+	this->scheduleOnce(CC_CALLBACK_0(LivesScene::missionJump, this), 3.f, "missionJump");
 
 	return true;
 }
 
-void LivesScene::missionJump(float dt)
+void LivesScene::missionJump()
 {
 	switch (mission)//根据数值跳转关卡
 	{
@@ -80,18 +79,17 @@ void LivesScene::missionJump(float dt)
 	case 9:
 
 		break;
-	case 10://第十关
+	case 10:
 
 		break;
 
-	case TEST://测试关
-	{		
+	case TEST://测试
+	{
 		Director::getInstance()->replaceScene(TransitionFade::create(2.f, TestScene::createScene()));
 		break;
 	}
-		
-	default://考虑达成某些条件，设置为隐藏关卡
+
+	default://隐藏关卡
 		break;
 	}
-
 }

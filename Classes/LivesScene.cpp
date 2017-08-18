@@ -1,9 +1,6 @@
 #include <string>
 #include <iostream>
 #include "LivesScene.h"
-#include "cocostudio/CocoStudio.h"
-#include "ui/CocosGUI.h"
-#include "SimpleAudioEngine.h"
 #include "GameData.h"
 #include "TestScene.h"
 
@@ -12,11 +9,8 @@ USING_NS_CC;
 #define TEST 9999
 
 using namespace std;
-using namespace CocosDenshion;
-using namespace cocostudio::timeline;
 
-extern int mario_lives;
-extern int mission;
+static Size visSize;
 
 Scene* LivesScene::createScene()
 {
@@ -34,30 +28,30 @@ bool LivesScene::init()
 		return false;
 	}
 
-	auto visSize = Director::getInstance()->getVisibleSize();
+	visSize = Director::getInstance()->getVisibleSize();
 
 	string string_mario_lives = to_string(mario_lives);
 
-	auto pic_lives = Sprite::create("res/PICTURE/lives.png");                              //马里奥生命头像
-	auto label_lives = Label::create("x"+string_mario_lives,"NewSuperMarioFontU.ttf",80);  //马里奥还有几条命
+	auto pic_lives = Sprite::create("res/PICTURE/lives.png");
+	auto label_lives = Label::create("x"+string_mario_lives,"NewSuperMarioFontU.ttf",80);
 	label_lives->setAnchorPoint(Vec2(0, 0.5));
 	
 	pic_lives->setPosition(Point(visSize.width / 2 - 50, visSize.height / 2));
 	label_lives->setPosition(Point(visSize.width * 0.5, visSize.height / 2));
 
+
 	this->addChild(label_lives);
 	this->addChild(pic_lives);
 
-	//设定计时器等待若干秒确保玩家看到还有多少条命
-	this->scheduleOnce(CC_CALLBACK_0(LivesScene::missionJump, this), 3.f, "jumpToMissionScene");  //3秒后跳转至关卡
+
+	this->scheduleOnce(CC_CALLBACK_1(LivesScene::missionJump, this), 3.f, "jumpToMissionScene");
 
 	return true;
 }
 
-void LivesScene::missionJump()
+void LivesScene::missionJump(float dt)
 {
-	//接下来跳转至XX场景关卡
-	switch (mission)//根据mission的数值跳转关卡
+	switch (mission)//根据数值跳转关卡
 	{
 	case 1://第一关
 

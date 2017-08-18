@@ -10,8 +10,16 @@
 USING_NS_CC;
 using namespace std;
 
-static vector<cocos2d::Sprite *> vector_Cloud; //存放云朵的容器
 
+//UI资源声明
+static Sprite* icon_Time;
+static Sprite* icon_Coin;
+static Label *time_left;
+static Label *get_coin_number;
+static Label *get_score;
+
+
+static vector<cocos2d::Sprite *> vector_Cloud; //存放云朵的容器
 
 void Controler::createCloud(Layer * layer, Node *character, Size visSize)
 {
@@ -44,36 +52,30 @@ void Controler::cloudPosControl(Layer * layer)
 
 void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long long &gameTime, unsigned long long &coin, unsigned long long &score)
 {
-	//UI资源声明
-	static Sprite* icon_Time;
-	static Sprite* icon_Coin;
-	static Label *time_left;
-	static Label *get_coin_number;
-	static Label *get_score;
+	static bool onCreate = true; //创建UI开关
 
-	Layer_UI->removeChildByName("icon_Time");
-	Layer_UI->removeChildByName("icon_Coin");
-	Layer_UI->removeChildByName("time_left");
-	Layer_UI->removeChildByName("get_coin_number");
-	Layer_UI->removeChildByName("get_score");
+	if (onCreate == true)
+	{
+		onCreate = false;
+		icon_Time = Sprite::create("res/PICTURE/time_UI.png");  //游戏中时间剩余图标
+		icon_Coin = Sprite::create("res/PICTURE/coin_UI.png");  //游戏中获取金币图标
 
-	icon_Time = Sprite::create("res/PICTURE/time_UI.png");  //游戏中时间剩余图标
-	icon_Time->setName("icon_Time");
+		icon_Time->setPosition(Point(visSize.width / 1.12, visSize.height / 1.08));
+		icon_Coin->setPosition(Point(visSize.width / 20, visSize.height / 1.08));
 
-	icon_Coin = Sprite::create("res/PICTURE/coin_UI.png");  //游戏中获取金币图标
-	icon_Coin->setName("icon_Coin");
+		Layer_UI->addChild(icon_Time, 2);
+		Layer_UI->addChild(icon_Coin, 2);
+	}
+	
+	Layer_UI->removeChild(time_left);
+	Layer_UI->removeChild(get_coin_number);
+	Layer_UI->removeChild(get_score);
 
-	icon_Time->setPosition(Point(visSize.width / 1.12, visSize.height / 1.08));
-	icon_Coin->setPosition(Point(visSize.width / 20, visSize.height / 1.08));
-
-	Layer_UI->addChild(icon_Time, 2);
-	Layer_UI->addChild(icon_Coin, 2);
-
-	__String* ns = __String::createWithFormat("%d", gameTime);
+	auto* str_gameTime = __String::createWithFormat("%d", gameTime);
 
 	--gameTime; //时间衰减
 
-	time_left = Label::createWithTTF(ns->getCString(), "NewSuperMarioFontU.ttf", 45);
+	time_left = Label::createWithTTF(str_gameTime->getCString(), "NewSuperMarioFontU.ttf", 45);
 	time_left->setName("time_left");
 
 	time_left->enableOutline(Color4B(0, 0, 0, 255), 4);  //黑色描边  最后一个参数是透明度
@@ -131,6 +133,8 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 	get_score->setPosition(Point(Point(visSize.width * 0.85, visSize.height / 1.086)));
 
 	Layer_UI->addChild(get_score, 2);
+
+	
 }
 
 void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_UI, Layer *  layer_Controler, TMXTiledMap * tiledMap, Node *character)

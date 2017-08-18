@@ -35,14 +35,14 @@ bool LogoScene::init()
 	this->addChild(sp_logo);
 
 
-	SimpleAudioEngine::getInstance()->playEffect("SE/vszed.wav");
+	SimpleAudioEngine::getInstance()->playEffect("SE/ElectricVszed.wav");
 
-	this->scheduleOnce(CC_CALLBACK_0(LogoScene::replaceScene, this), 2.5f, "replaceScene");
+	this->scheduleOnce(CC_CALLBACK_0(LogoScene::replaceScene, this), 3.5f, "replaceScene");
 
 	return true;
 }
 
 void LogoScene::replaceScene()
 {
-	Director::getInstance()->replaceScene(TransitionTurnOffTiles::create(.7f, GameTitleScene::createScene()));
+	Director::getInstance()->replaceScene(TransitionTurnOffTiles::create(.6f, GameTitleScene::createScene()));
 }

@@ -15,9 +15,10 @@ using namespace std;
 using namespace CocosDenshion;
 using namespace cocostudio::timeline;
 
-static Size visSize;
+extern int mario_lives;
+extern int mission;
 
-Scene* LivesScene::createScene()               //ĞèÒªÔÚ´Ë³¡¾°ÖĞÈ·¶¨½ÓÏÂÀ´Ìø×ªµ½ÄÄ¸ö¹Ø¿¨£¬ÄâÓÃswitch...caseÊµÏÖ
+Scene* LivesScene::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = LivesScene::create();
@@ -27,34 +28,33 @@ Scene* LivesScene::createScene()               //ĞèÒªÔÚ´Ë³¡¾°ÖĞÈ·¶¨½ÓÏÂÀ´Ìø×ªµ½Ä
 
 bool LivesScene::init()
 {
-	visSize = Director::getInstance()->getVisibleSize();
-
-	string string_mario_lives = to_string(mario_lives);
-
-	auto pic_lives = Sprite::create("res/PICTURE/lives.png");                          //ÂíÀï°ÂÉúÃüÍ·Ïñ
-	auto label_lives = Label::create("x"+string_mario_lives,"NewSuperMarioFontU.ttf",80);  //ÂíÀï°Â»¹ÓĞ¼¸ÌõÃü
-	label_lives->setAnchorPoint(Vec2(0, 0.5));
-	
-	pic_lives->setPosition(Point(visSize.width / 2 - 50, visSize.height / 2));
-	label_lives->setPosition(Point(visSize.width * 0.5, visSize.height / 2));
-
-
-	this->addChild(label_lives);
-	this->addChild(pic_lives);
-
-	//Éè¶¨¼ÆÊ±Æ÷µÈ´ıÈô¸ÉÃëÈ·±£Íæ¼Ò¿´µ½»¹ÓĞ¶àÉÙÌõÃü
-	this->scheduleOnce(CC_CALLBACK_1(LivesScene::missionJump, this), 3.f, "jumpToMissionScene");  //3ÃëºóÌø×ªÖÁ¹Ø¿¨
-
 
 	if (!Layer::init())
 	{
 		return false;
 	}
 
+	auto visSize = Director::getInstance()->getVisibleSize();
+
+	string string_mario_lives = to_string(mario_lives);
+
+	auto pic_lives = Sprite::create("res/PICTURE/lives.png");                              //ÂíÀï°ÂÉúÃüÍ·Ïñ
+	auto label_lives = Label::create("x"+string_mario_lives,"NewSuperMarioFontU.ttf",80);  //ÂíÀï°Â»¹ÓĞ¼¸ÌõÃü
+	label_lives->setAnchorPoint(Vec2(0, 0.5));
+	
+	pic_lives->setPosition(Point(visSize.width / 2 - 50, visSize.height / 2));
+	label_lives->setPosition(Point(visSize.width * 0.5, visSize.height / 2));
+
+	this->addChild(label_lives);
+	this->addChild(pic_lives);
+
+	//Éè¶¨¼ÆÊ±Æ÷µÈ´ıÈô¸ÉÃëÈ·±£Íæ¼Ò¿´µ½»¹ÓĞ¶àÉÙÌõÃü
+	this->scheduleOnce(CC_CALLBACK_0(LivesScene::missionJump, this), 3.f, "jumpToMissionScene");  //3ÃëºóÌø×ªÖÁ¹Ø¿¨
+
 	return true;
 }
 
-void LivesScene::missionJump(float dt)
+void LivesScene::missionJump()
 {
 	//½ÓÏÂÀ´Ìø×ªÖÁXX³¡¾°¹Ø¿¨
 	switch (mission)//¸ù¾İmissionµÄÊıÖµÌø×ª¹Ø¿¨

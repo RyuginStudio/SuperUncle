@@ -25,7 +25,7 @@ public:
 	//键盘对角色的行为操控（事件回调+进一步处理）
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event);
-	void keyBoardControler(); //键盘控制器
+	void keyBoardControler(float delta); //键盘控制器
 
 	void update_per_second(float delta);  //设定每秒的监听事件回调函数
 

@@ -10,7 +10,7 @@ public:
 	Character();
 	~Character();
 
-	void move(int speedPlus_minus);     //角色横向移动及动画(向左走传入-1，向右走传入1，停止动作传入0)
+	void move(int speedPlus_minus, float delta);     //角色横向移动及动画(向左走传入-1，向右走传入1，停止动作传入0)
 	void moveAnimtionCallback();        //移动动画播放完的回调
 
 	void jump();     //角色跳动函数

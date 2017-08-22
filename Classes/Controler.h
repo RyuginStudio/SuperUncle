@@ -18,7 +18,7 @@ public:
 
 	static void CreateUpdateUI(cocos2d::Layer *, cocos2d::Size, unsigned long long &gameTime, unsigned long long &coin, unsigned long long &score); //创建|刷新UI：金币时间等
 
-	static void tiledMapScroll(cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::TMXTiledMap * tiledMap, cocos2d::Node * character); //地图滚动
+	static void tiledMapScroll(cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::TMXTiledMap * tiledMap, cocos2d::Node * character, float delta); //地图滚动
 
 	static void createBackGround(cocos2d::Layer *, cocos2d::Size); //BG创建
 };

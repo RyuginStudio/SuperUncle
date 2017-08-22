@@ -190,39 +190,37 @@ void TestScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 	}
 }
 
-void TestScene::keyBoardControler() //键盘控制器进一步处理 => 放入帧定时器
+void TestScene::keyBoardControler(float delta) //键盘控制器进一步处理 => 放入帧定时器
 {
 	if (map_keyPressed.find("left")->second && map_keyPressed.find("right")->second
 		|| !map_keyPressed.find("left")->second && !map_keyPressed.find("right")->second) //同时按下/抬起角色停滞不前
 	{
-		character.move(0);
+		character.move(0, delta);
 		return;
 	}
 	if (map_keyPressed.find("left")->second == true)  //左键按下
 	{
 		isSporting = true;
-		character.move(-1);
+		character.move(-1, delta);
 	}
 	if (map_keyPressed.find("right")->second == true)  //右键按下
 	{
 		isSporting = true;
-		character.move(1);
+		character.move(1, delta);
 	}
-
-	Controler::tiledMapScroll(this, Layer_BG, Layer_UI, Layer_Control, tiledMap, character.sp_man);  //地图滚动
-
 }
 
 void TestScene::update_per_second(float delta) //1s定时器
 {
-	Controler::CreateUpdateUI(Layer_UI, visSize, gameTime, coin, score); //创建|刷新时间等UI
+	//Controler::CreateUpdateUI(Layer_UI, visSize, gameTime, coin, score); //创建|刷新时间等UI
 	Controler::createCloud(Layer_BG, character.sp_man, visSize); 
 }
 
 void TestScene::update(float delta)  //帧定时器
 {
+	Controler::tiledMapScroll(this, Layer_BG, Layer_UI, Layer_Control, tiledMap, character.sp_man, delta);  //地图滚动
 	Controler::cloudPosControl(Layer_BG); //云朵位置控制
-	keyBoardControler(); //键盘控制器进一步处理  =>  触控也需要这个函数
+	keyBoardControler(delta); //键盘控制器进一步处理  =>  触控也需要这个函数
 	//VirtualRockerAndButton::touchMoveControl(); //触摸行走控制  =>  win32键盘演示记得屏蔽此行
 
 	if (GetAsyncKeyState(VK_F3))

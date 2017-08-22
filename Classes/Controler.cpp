@@ -137,7 +137,7 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 	
 }
 
-void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_UI, Layer *  layer_Controler, TMXTiledMap * tiledMap, Node *character)
+void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_UI, Layer *  layer_Controler, TMXTiledMap * tiledMap, Node *character, float delta)
 {
 	Layer *parent = (Layer *)layer->getParent();
 	Size winSize = Director::getInstance()->getWinSize();   //获取屏幕的尺寸
@@ -147,7 +147,6 @@ void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_U
 	Size MapSize = Size(mapNumbers.width*tiledSize.width, mapNumbers.height*tiledSize.height); //计算得出整个瓦片地图的尺寸
 
 	auto sprite_pos = character->getPosition(); //获取角色坐标
-
 
 	 //如果主角坐标小于屏幕的一半，那么取屏幕中点坐标，否则，取角色坐标
 	float x = std::max(sprite_pos.x, winSize.width / 2);
@@ -166,10 +165,49 @@ void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_U
 	//计算屏幕中心点和要移动至的目的点之间的距离
 	Point distance = centerPos - destPos;
 
-	layer_BG->setPosition(-distance.x / 1.05, layer_BG->getPosition().y);
-	layer_UI->setPosition(-distance);
-	layer_Controler->setPosition(-distance);
-	layer->setPosition(distance);
+	static Point temp_distance;
+	if (temp_distance.x > distance.x)  //场景左移
+	{
+		auto pos_layer = layer->getPosition();
+		if (x >= MapSize.width - winSize.width / 2) //防地图黑边
+		{
+			layer->setPosition(distance);
+		}
+		else
+		layer->setPosition(Point(pos_layer.x - delta * 450, pos_layer.y));
+		
+		auto pos_layerBG = layer_BG->getPosition();
+		layer_BG->setPosition(Point(pos_layerBG.x + delta * 410, pos_layerBG.y));
+
+		auto pos_layerUI = layer_UI->getPosition();
+		layer_UI->setPosition(Point(pos_layerUI.x + delta * 450, pos_layerUI.y));
+	
+		auto pos_layerControler = layer_Controler->getPosition();
+		layer_Controler->setPosition(Point(pos_layerControler.x + delta * 450, pos_layerControler.y));
+
+		temp_distance.x = distance.x;
+	}
+	else if (temp_distance.x < distance.x)  //场景右移
+	{
+		auto pos_layer = layer->getPosition();
+		if (x <= winSize.width / 2)
+		{
+			layer->setPosition(distance);
+		}
+		else
+		layer->setPosition(Point(pos_layer.x + delta * 450, pos_layer.y));
+
+		auto pos_layerBG = layer_BG->getPosition();
+		layer_BG->setPosition(Point(pos_layerBG.x - delta * 410, pos_layerBG.y));
+
+		auto pos_layerUI = layer_UI->getPosition();
+		layer_UI->setPosition(Point(pos_layerUI.x - delta * 450, pos_layerUI.y));
+
+		auto pos_layerControler = layer_Controler->getPosition();
+		layer_Controler->setPosition(Point(pos_layerControler.x - delta * 450, pos_layerControler.y));
+
+		temp_distance.x = distance.x;
+	}
 }
 
 void Controler::createBackGround(Layer *Layer_BG, Size visSize)//创建游戏背景

@@ -33,7 +33,7 @@ Character::~Character()
 }
 
 
-void Character::move(int speedPlus_minus) //角色横向移动及动画
+void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 {	
 	auto animation = Animation3D::create("res/3Dsprite&action/run_to_stand_final.c3b");  //获取骨骼信息
 
@@ -57,7 +57,7 @@ void Character::move(int speedPlus_minus) //角色横向移动及动画
 
 	auto play_move = Animate3D::create(animation, 0.f, 0.5f);   //创建3D动画
 
-	auto ac_move = MoveBy::create(0.1f, Point(speedPlus_minus*speed, 0)); //移动动作
+	auto ac_move = MoveBy::create(0.9*delta, Point(speedPlus_minus * delta * 450, 0)); //移动动作
 
 	auto action_turn = RotateTo::create(0, Vec3(0, speedPlus_minus*90, 0));   //设定旋转动作，操纵Sprite转动
 

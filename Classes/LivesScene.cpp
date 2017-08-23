@@ -4,7 +4,7 @@
 #include "TestScene.h"
 
 using namespace cocos2d;
-using namespace std;
+
 
 #define TEST 9999
 
@@ -31,10 +31,10 @@ bool LivesScene::init()
 
 	visSize = Director::getInstance()->getVisibleSize();
 
-	string string_mario_lives = to_string(mario_lives);
+	auto string_mario_lives = __String::createWithFormat("%d", mario_lives)->_string;
 
 	auto pic_lives = Sprite::create("res/PICTURE/lives.png");
-	auto label_lives = Label::create("x" + string_mario_lives, "NewSuperMarioFontU.ttf", 80);
+	auto label_lives = Label::createWithTTF("x" + string_mario_lives, "NewSuperMarioFontU.ttf", 80);
 	label_lives->setAnchorPoint(Vec2(0, 0.5));
 
 	pic_lives->setPosition(Point(visSize.width / 2 - 50, visSize.height / 2));

@@ -28,9 +28,6 @@ Scene* GameTitleScene::createScene()
 // on "init" you need to initialize your instance
 bool GameTitleScene::init()
 {
-	SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("res/BGM/SuperMario.mp3");   //加载title背景音乐
-
-
 	if (!Layer::init())
 	{
 		return false;
@@ -40,8 +37,6 @@ bool GameTitleScene::init()
 	auto rootNode = CSLoader::createNode("GameTitle.csb");
 	addChild(rootNode);
 	//加载场景csb文件
-
-
 
 	auto menu_Story = MenuItemImage::create("res/PICTURE/story_unselected.png","res/PICTURE/story_selected.png",CC_CALLBACK_1(GameTitleScene::menu_Image_Story_callback, this));
 	auto menu_Web = MenuItemImage::create("res/PICTURE/web_unselected.png", "res/PICTURE/web_selected.png", CC_CALLBACK_1(GameTitleScene::menu_Image_Web_callback, this));

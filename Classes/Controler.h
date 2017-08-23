@@ -16,7 +16,7 @@ public:
 
 	static void cloudPosControl(cocos2d::Layer * layer);
 
-	static void CreateUpdateUI(cocos2d::Layer *, cocos2d::Size, unsigned long long &gameTime, unsigned long long &coin, unsigned long long &score); //创建|刷新UI：金币时间等
+	static void CreateUpdateUI(cocos2d::Layer *, cocos2d::Size, int &gameTime, int &coin, int &score); //创建|刷新UI：金币时间等
 
 	static void tiledMapScroll(cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::Layer *, cocos2d::TMXTiledMap * tiledMap, cocos2d::Node * character, float delta); //地图滚动
 

@@ -221,16 +221,5 @@ void TestScene::update(float delta)  //帧定时器
 	Controler::tiledMapScroll(this, Layer_BG, Layer_UI, Layer_Control, tiledMap, character.sp_man, delta);  //地图滚动
 	Controler::cloudPosControl(Layer_BG); //云朵位置控制
 	keyBoardControler(delta); //键盘控制器进一步处理  =>  触控也需要这个函数
-	//VirtualRockerAndButton::touchMoveControl(); //触摸行走控制  =>  win32键盘演示记得屏蔽此行
-
-	if (GetAsyncKeyState(VK_F3))
-	{
-		auto pos = this->getPosition();
-		this->setPosition(pos.x -= 6, pos.y);
-	}
-	if (GetAsyncKeyState(VK_F4))
-	{
-		auto pos = this->getPosition();
-		this->setPosition(pos.x += 6, pos.y);
-	}
+	VirtualRockerAndButton::touchMoveControl(); //触摸行走控制  =>  win32键盘演示记得屏蔽此行
 }

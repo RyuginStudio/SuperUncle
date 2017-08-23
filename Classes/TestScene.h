@@ -7,11 +7,11 @@ class TestScene : public cocos2d::Layer
 {
 public:
 
-	unsigned long long coin = 0;      //本关卡获得的金币数 => longlong防止修改器导致游戏崩溃
+	int coin = 0;      //本关卡获得的金币数 => longlong防止修改器导致游戏崩溃
 
-	unsigned long long gameTime = 500;  //本关卡游戏时间总长
+	int gameTime = 500;  //本关卡游戏时间总长
 
-	unsigned long long score = 0;      //本关卡计分板
+	int score = 0;      //本关卡计分板
 
 	Character character;
 

@@ -50,7 +50,7 @@ void Controler::cloudPosControl(Layer * layer)
 
 }
 
-void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long long &gameTime, unsigned long long &coin, unsigned long long &score)
+void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, int &gameTime, int &coin, int &score)
 {
 	static bool onCreate = true; //创建UI开关
 
@@ -66,7 +66,7 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 		Layer_UI->addChild(icon_Time, 2);
 		Layer_UI->addChild(icon_Coin, 2);
 	}
-	
+
 	Layer_UI->removeChild(time_left);
 	Layer_UI->removeChild(get_coin_number);
 	Layer_UI->removeChild(get_score);
@@ -87,9 +87,9 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 
 	//=======================以下为显示金币个数的label===============================//
 	if (coin < 10)
-		get_coin_number = Label::createWithTTF("x0" + to_string(coin), "NewSuperMarioFontU.ttf", 45);  //本关卡中获得了多少金币
+		get_coin_number = Label::createWithTTF("x0" + __String::createWithFormat("%d", coin)->_string, "NewSuperMarioFontU.ttf", 45);  //本关卡中获得了多少金币
 	else
-		get_coin_number = Label::createWithTTF("x" + to_string(coin), "NewSuperMarioFontU.ttf", 45);  //本关卡中获得了多少金币
+		get_coin_number = Label::createWithTTF("x" + __String::createWithFormat("%d", coin)->_string, "NewSuperMarioFontU.ttf", 45);  //本关卡中获得了多少金币
 
 	get_coin_number->setName("get_coin_number");
 
@@ -118,7 +118,7 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 	for (int i = 0; i < 8 - k; i++) //最多补8个零
 		numberOfZero += "0";
 
-	get_score = Label::createWithTTF(numberOfZero + to_string(score), "NewSuperMarioFontU.ttf", 40);  //本关卡中获得了多少金币
+	get_score = Label::createWithTTF(numberOfZero + __String::createWithFormat("%d", score)->_string, "NewSuperMarioFontU.ttf", 40);  //本关卡中获得了多少金币
 
 	get_score->setAnchorPoint(Vec2(1, 0.5));
 
@@ -134,12 +134,11 @@ void Controler::CreateUpdateUI(Layer * Layer_UI, Size visSize, unsigned long lon
 
 	Layer_UI->addChild(get_score, 2);
 
-	
+
 }
 
 void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_UI, Layer *  layer_Controler, TMXTiledMap * tiledMap, Node *character, float delta)
 {
-	Layer *parent = (Layer *)layer->getParent();
 	Size winSize = Director::getInstance()->getWinSize();   //获取屏幕的尺寸
 
 	Size mapNumbers = tiledMap->getMapSize();  //获取地图方块数量（元素个数）
@@ -170,20 +169,19 @@ void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_U
 	{
 		auto pos_layer = layer->getPosition();
 		if (x >= MapSize.width - winSize.width / 2) //防地图黑边
-		{
 			layer->setPosition(distance);
-		}
 		else
-		layer->setPosition(Point(pos_layer.x - delta * 450, pos_layer.y));
-		
+			layer->setPosition(Point(pos_layer.x - delta * 300, pos_layer.y));
+
+
 		auto pos_layerBG = layer_BG->getPosition();
-		layer_BG->setPosition(Point(pos_layerBG.x + delta * 410, pos_layerBG.y));
+		layer_BG->setPosition(Point(pos_layerBG.x + delta * 280, pos_layerBG.y));
 
 		auto pos_layerUI = layer_UI->getPosition();
-		layer_UI->setPosition(Point(pos_layerUI.x + delta * 450, pos_layerUI.y));
-	
+		layer_UI->setPosition(Point(pos_layerUI.x + delta * 300, pos_layerUI.y));
+
 		auto pos_layerControler = layer_Controler->getPosition();
-		layer_Controler->setPosition(Point(pos_layerControler.x + delta * 450, pos_layerControler.y));
+		layer_Controler->setPosition(Point(pos_layerControler.x + delta * 300, pos_layerControler.y));
 
 		temp_distance.x = distance.x;
 	}
@@ -191,20 +189,19 @@ void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_U
 	{
 		auto pos_layer = layer->getPosition();
 		if (x <= winSize.width / 2)
-		{
 			layer->setPosition(distance);
-		}
 		else
-		layer->setPosition(Point(pos_layer.x + delta * 450, pos_layer.y));
+			layer->setPosition(Point(pos_layer.x + delta * 300, pos_layer.y));
+
 
 		auto pos_layerBG = layer_BG->getPosition();
-		layer_BG->setPosition(Point(pos_layerBG.x - delta * 410, pos_layerBG.y));
+		layer_BG->setPosition(Point(pos_layerBG.x - delta * 280, pos_layerBG.y));
 
 		auto pos_layerUI = layer_UI->getPosition();
-		layer_UI->setPosition(Point(pos_layerUI.x - delta * 450, pos_layerUI.y));
+		layer_UI->setPosition(Point(pos_layerUI.x - delta * 300, pos_layerUI.y));
 
 		auto pos_layerControler = layer_Controler->getPosition();
-		layer_Controler->setPosition(Point(pos_layerControler.x - delta * 450, pos_layerControler.y));
+		layer_Controler->setPosition(Point(pos_layerControler.x - delta * 300, pos_layerControler.y));
 
 		temp_distance.x = distance.x;
 	}

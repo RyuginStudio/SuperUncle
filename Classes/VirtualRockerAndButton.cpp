@@ -128,13 +128,13 @@ void VirtualRockerAndButton::touchMoveControl()
 		map_keyPressed.find("right")->second = false;
 	}
 	else if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
-		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x > 63) //向右走
+		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x > 30) //向右走
 	{
 		map_keyPressed.find("right")->second = true;
 		map_keyPressed.find("left")->second = false;
 	}
 	else if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
-		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x < -63) //向左走
+		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x < -30) //向左走
 	{
 		map_keyPressed.find("left")->second = true;
 		map_keyPressed.find("right")->second = false;

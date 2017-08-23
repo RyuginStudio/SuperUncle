@@ -35,7 +35,16 @@ Character::~Character()
 
 void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 {	
-	auto animation = Animation3D::create("res/3Dsprite&action/run_to_stand_final.c3b");  //获取骨骼信息
+	auto animation_bone = Animation3D::create("res/3Dsprite&action/run_to_stand_final.c3b");  //获取骨骼信息
+
+	auto animation_run = Animate3D::create(animation_bone, 0.f, 0.5f);                        //3D跑动动画
+	auto ac_repeatForever = RepeatForever::create(animation_run);                             //封装跑动动画永动
+	auto animation_recover = Animate3D::create(animation_bone, 0.5f, 0.68f);                  //3D恢复站立动画
+
+	auto ac_moveLR = MoveBy::create(0.9*delta, Point(speedPlus_minus * delta * 450, 0));      //左右移动
+	auto ac_turnLR = RotateTo::create(0, Vec3(0, speedPlus_minus * 90, 0));                   //向左走、向右走
+	auto ac_spawn = Spawn::create(ac_turnLR, ac_moveLR, NULL);                                //移动+转向
+
 
 	if (speedPlus_minus == 0) //执行跑步恢复至站立的动画
 	{
@@ -46,38 +55,23 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 
 		isSporting = false;            //角色不在运动中
 		moveAnimtionFinished = true;   //角色移动动画结束
-
-		auto play_recover_stand = Animate3D::create(animation, 0.5f, 0.68f);   //创建3D恢复动画	
-		play_recover_stand->setSpeed(100.0f);
-		
-		sp_man->runAction(play_recover_stand);
+			
+		animation_recover->setSpeed(100.0f);		
+		sp_man->runAction(animation_recover);
 	
 		return;
 	}
 
-	auto play_move = Animate3D::create(animation, 0.f, 0.5f);   //创建3D动画
-
-	auto ac_move = MoveBy::create(0.9*delta, Point(speedPlus_minus * delta * 450, 0)); //移动动作
-
-	auto action_turn = RotateTo::create(0, Vec3(0, speedPlus_minus*90, 0));   //设定旋转动作，操纵Sprite转动
-
 	//动画执行完以后的回调 => 防止一个动画未结束，另一个动画就开始
-	auto *actionMove =
-		Sequence::create(play_move, CallFunc::create(CC_CALLBACK_0(Character::moveAnimtionCallback, this)), NULL);
-
-	if (moveAnimtionFinished == true)   //动画不可附加 => 利用Sequence一个一个执行的特点，在执行完动画之后才执行回调->告知动画结束
+	if (moveAnimtionFinished == true)
 	{
 		moveAnimtionFinished = false;
-		sp_man->runAction(actionMove);    //执行动画
+		sp_man->runAction(ac_repeatForever);
 	}
-	auto ac_spawn = Spawn::create(action_turn, ac_move, NULL);   //移动可每帧进行
-	sp_man->runAction(ac_spawn);
+
+	sp_man->runAction(ac_spawn); //左右移动每帧执行
 }
 
-void Character::moveAnimtionCallback()  //移动动画播放完的回调
-{
-	moveAnimtionFinished = true;
-}
 
 
 

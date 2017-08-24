@@ -27,11 +27,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::createWithRect("Super Uncle  V1.0", Rect(0, 0, 123.4, 75.0)); //iphone7
+        glview = GLViewImpl::createWithRect("Super Uncle  V1.0", Rect(0, 0, 1234, 750)); //iphone7
         director->setOpenGLView(glview);
     }
 
-	director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//�ޱ߿�   //::SHOW_ALL); => last version
+	director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//ÎÞ±ß¿ò   //::SHOW_ALL); => last version
 
     // turn on display FPS
     director->setDisplayStats(true);

@@ -2,7 +2,7 @@
 功能：在屏幕上创建虚拟摇杆和按键
 作者：张天翼
 时间：2017年8月5日01:28:43
-特点：单例类
+特点：单例类&平台宏自适应
 */
 
 #include "VirtualRockerAndButton.h"
@@ -29,6 +29,10 @@ VirtualRockerAndButton *VirtualRockerAndButton::virtualRockerAndButton = nullptr
 
 void VirtualRockerAndButton::create(cocos2d::Layer *layer, cocos2d::Size visSize)
 {
+#if CC_PLATFORM_WIN32
+	return;
+#endif
+
 	auto sp_VirtualRockerCircle = Sprite::create(circlePath);
 	sp_VirtualRockerCircle->setName("sp_VirtualCircle");
 	auto sp_VirtualRockerPoint = Sprite::create(pointPath);
@@ -45,6 +49,10 @@ void VirtualRockerAndButton::create(cocos2d::Layer *layer, cocos2d::Size visSize
 
 VirtualRockerAndButton * VirtualRockerAndButton::getInstance(Layer* layer, Size visSize)
 {
+#if CC_PLATFORM_WIN32
+	return nullptr;
+#endif
+
 	if (virtualRockerAndButton == nullptr)
 	{
 		virtualRockerAndButton = new VirtualRockerAndButton();
@@ -56,6 +64,10 @@ VirtualRockerAndButton * VirtualRockerAndButton::getInstance(Layer* layer, Size 
 
 bool VirtualRockerAndButton::onTouchBegan(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
+#if CC_PLATFORM_WIN32
+	return false;
+#endif
+
 	CCLOG("%f, %f", tTouch->getLocation().x, tTouch->getLocation().y);
 
 	//触摸起始点在摇杆范围内才返回true
@@ -70,6 +82,10 @@ bool VirtualRockerAndButton::onTouchBegan(cocos2d::Touch * tTouch, cocos2d::Even
 
 void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
+#if CC_PLATFORM_WIN32
+	return;
+#endif
+
 	auto VisSize = Director::getInstance()->getVisibleSize();
 
 	auto Nowdistance = std::abs(
@@ -115,12 +131,20 @@ void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Ev
 
 void VirtualRockerAndButton::onTouchEnded(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
+#if CC_PLATFORM_WIN32
+	return;
+#endif
+
 	tempLayer->getChildByName("sp_VirtualPoint")
 		->setPosition(tempLayer->getChildByName("sp_VirtualCircle")->getPosition());
 }
 
 void VirtualRockerAndButton::touchMoveControl()
 {
+#if CC_PLATFORM_WIN32
+	return;
+#endif
+
 	if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
 		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x == 0) //静止状态
 	{

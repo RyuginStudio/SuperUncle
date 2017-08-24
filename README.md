@@ -7,7 +7,9 @@ Official website: www.vszed.com
 Via: C++ & Cocos2dx 3.15
 
 Kind: 2D adventure game of action
+
 =================================
+
 游戏名称：超级大叔
 
 作者：VSZED STUDIO

@@ -1,7 +1,7 @@
 #include "Character.h"
 
-bool moveAnimtionFinished = true;       //ÒÆ¶¯¶¯»­²¥·ÅÍê³É
-bool isSporting = false;                //½ÇÉ«ÊÇ·ñ´¦ÓÚÔË¶¯ÖĞ
+bool moveAnimtionFinished = true;       //ç§»åŠ¨åŠ¨ç”»æ’­æ”¾å®Œæˆ
+bool isSporting = false;                //è§’è‰²æ˜¯å¦å¤„äºè¿åŠ¨ä¸­
 
 Character::Character()
 {
@@ -14,15 +14,13 @@ Character::Character()
 	this->jump_height_big = 10;
 
 
-	sp_man = Sprite3D::create("res/3Dsprite&action/sprite_stand.c3b");  //¾«ÁéËØ²Ä£¬ÅäºÏËØ²ÄÎÄ¼şÊ¹ÓÃ
-
-	sp_man->setGlobalZOrder(5);    //¿ØÖÆ3D½ÇÉ«ÕÚµ²
+	sp_man = Sprite3D::create("3Dsprite&action/sprite_stand.c3b");  //ç²¾çµç´ æï¼Œé…åˆç´ ææ–‡ä»¶ä½¿ç”¨
 
 	Size winsize = Director::getInstance()->getWinSize();
 
-	sp_man->setScale(1.5f);     //ÉèÖÃ·Å´ó±ÈÀı
+	sp_man->setScale(1.5f);     //è®¾ç½®æ”¾å¤§æ¯”ä¾‹
 
-	auto ac_RotateTo = RotateTo::create(0.001f, Vec3(0, 90, 0));//Éè¶¨Ğı×ª¶¯×÷£¬²Ù×İSprite => ²»ÄÜÉèÖÃÎª0.f²¿·Ö»úĞÍ²»Ö´ĞĞ
+	auto ac_RotateTo = RotateTo::create(0.001f, Vec3(0, 90, 0));//è®¾å®šæ—‹è½¬åŠ¨ä½œï¼Œæ“çºµSprite => ä¸èƒ½è®¾ç½®ä¸º0.féƒ¨åˆ†æœºå‹ä¸æ‰§è¡Œ
 
 	sp_man->runAction(ac_RotateTo);
 }
@@ -33,23 +31,23 @@ Character::~Character()
 }
 
 
-void Character::move(int speedPlus_minus, float delta) //½ÇÉ«ºáÏòÒÆ¶¯¼°¶¯»­
+void Character::move(int speedPlus_minus, float delta) //è§’è‰²æ¨ªå‘ç§»åŠ¨åŠåŠ¨ç”»
 {
-	auto animation_bone = Animation3D::create("res/3Dsprite&action/run_to_stand_final.c3b");  //»ñÈ¡¹Ç÷ÀĞÅÏ¢
-	auto animation_run = Animate3D::create(animation_bone, 0.f, 0.5f);                        //3DÅÜ¶¯¶¯»­
-	auto ac_repeatForever = RepeatForever::create(animation_run);                             //·â×°ÅÜ¶¯¶¯»­ÓÀ¶¯
-	auto animation_recover = Animate3D::create(animation_bone, 0.5f, 0.68f);                  //3D»Ö¸´Õ¾Á¢¶¯»­
+	auto animation_bone = Animation3D::create("3Dsprite&action/run_to_stand_final.c3b");  //è·å–éª¨éª¼ä¿¡æ¯
+	auto animation_run = Animate3D::create(animation_bone, 0.f, 0.5f);                        //3Dè·‘åŠ¨åŠ¨ç”»
+	auto ac_repeatForever = RepeatForever::create(animation_run);                             //å°è£…è·‘åŠ¨åŠ¨ç”»æ°¸åŠ¨
+	auto animation_recover = Animate3D::create(animation_bone, 0.5f, 0.68f);                  //3Dæ¢å¤ç«™ç«‹åŠ¨ç”»
 
 
-	if (speedPlus_minus == 0) //Ö´ĞĞÅÜ²½»Ö¸´ÖÁÕ¾Á¢µÄ¶¯»­
+	if (speedPlus_minus == 0) //æ‰§è¡Œè·‘æ­¥æ¢å¤è‡³ç«™ç«‹çš„åŠ¨ç”»
 	{
-		if (isSporting == false)  //½ÇÉ«ÊÇ·ñ´¦ÓÚÔË¶¯ÖĞ
+		if (isSporting == false)  //è§’è‰²æ˜¯å¦å¤„äºè¿åŠ¨ä¸­
 			return;
 
 		sp_man->stopAllActions();
 
-		isSporting = false;            //½ÇÉ«²»ÔÚÔË¶¯ÖĞ
-		moveAnimtionFinished = true;   //½ÇÉ«ÒÆ¶¯¶¯»­½áÊø
+		isSporting = false;            //è§’è‰²ä¸åœ¨è¿åŠ¨ä¸­
+		moveAnimtionFinished = true;   //è§’è‰²ç§»åŠ¨åŠ¨ç”»ç»“æŸ
 
 		animation_recover->setSpeed(100.0f);
 		sp_man->runAction(animation_recover);
@@ -57,7 +55,7 @@ void Character::move(int speedPlus_minus, float delta) //½ÇÉ«ºáÏòÒÆ¶¯¼°¶¯»­
 		return;
 	}
 
-	//·ÀÖ¹¶¯»­¸½¼Ó
+	//é˜²æ­¢åŠ¨ç”»é™„åŠ 
 	if (moveAnimtionFinished == true)
 	{
 		moveAnimtionFinished = false;
@@ -65,8 +63,8 @@ void Character::move(int speedPlus_minus, float delta) //½ÇÉ«ºáÏòÒÆ¶¯¼°¶¯»­
 	}
 
 	auto pos = sp_man->getPosition();
-	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                   //×ªÏò
-	sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * 300, pos.y));  //ÒÆ¶¯
+	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                   //è½¬å‘
+	sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * 300, pos.y));  //ç§»åŠ¨
 }
 
 
@@ -75,21 +73,21 @@ int Character::get_speed()
 	return this->speed;
 }
 
-void Character::jump()  //ÌøÔ¾
+void Character::jump()  //è·³è·ƒ
 {
 	auto ac_jump = JumpBy::create(0.1f, Point(0, 0), 40, 1);
 	sp_man->runAction(ac_jump);
 }
 
-void Character::initBeginPos(TMXTiledMap *map)  //³õÊ¼»¯½ÇÉ«Î»ÖÃ£¨Í¨¹ıÍßÆ¬µØÍ¼¶ÔÏó£©
+void Character::initBeginPos(TMXTiledMap *map)  //åˆå§‹åŒ–è§’è‰²ä½ç½®ï¼ˆé€šè¿‡ç“¦ç‰‡åœ°å›¾å¯¹è±¡ï¼‰
 {
-	//´´½¨Ò»¸ö´æ·Å¶ÔÏóµÄGroup
-	TMXObjectGroup* objGroup = map->getObjectGroup("objects");  //objects±íÊ¾ÍßÆ¬µØÍ¼¶ÔÏó²ãµÄÃû×Ö
-	//¼ÓÔØPlayerPoint¶ÔÏó
-	ValueMap PlayerPoint = objGroup->getObject("PlayerPoint"); //»ñÈ¡¶ÔÏó×éÖĞµÄPlayerPoint¶ÔÏó
+	//åˆ›å»ºä¸€ä¸ªå­˜æ”¾å¯¹è±¡çš„Group
+	TMXObjectGroup* objGroup = map->getObjectGroup("objects");  //objectsè¡¨ç¤ºç“¦ç‰‡åœ°å›¾å¯¹è±¡å±‚çš„åå­—
+	//åŠ è½½PlayerPointå¯¹è±¡
+	ValueMap PlayerPoint = objGroup->getObject("PlayerPoint"); //è·å–å¯¹è±¡ç»„ä¸­çš„PlayerPointå¯¹è±¡
 
-	float posBegin_X = PlayerPoint.at("x").asFloat();  //µÃµ½¶ÔÏóµÄx£¬y×ø±ê
+	float posBegin_X = PlayerPoint.at("x").asFloat();  //å¾—åˆ°å¯¹è±¡çš„xï¼Œyåæ ‡
 	float posBegin_Y = PlayerPoint.at("y").asFloat();
 
-	sp_man->setPosition(Point(posBegin_X, posBegin_Y));   //Éè¶¨½ÇÉ«³õÊ¼»¯µÄÎ»ÖÃ
+	sp_man->setPosition(Point(posBegin_X, posBegin_Y));   //è®¾å®šè§’è‰²åˆå§‹åŒ–çš„ä½ç½®
 }

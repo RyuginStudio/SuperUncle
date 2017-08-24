@@ -31,7 +31,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-	director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//无边框   //::SHOW_ALL); => last version
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::EXACT_FIT);//无边框 => win32平台
+	else
+		director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//无边框 => Ios、Android平台
+	
 
     // turn on display FPS
     director->setDisplayStats(true);

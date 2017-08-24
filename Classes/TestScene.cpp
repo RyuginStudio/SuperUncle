@@ -96,6 +96,12 @@ bool TestScene::init()
 	this->scheduleUpdate();
 
 
+	//重力计监听事件 => 摇一摇暂停游戏
+	auto eventListenerAcceleration = EventListenerAcceleration::create(CC_CALLBACK_2(TestScene::onAcceleration, this));
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerAcceleration, this);
+	setAccelerometerEnabled(true); //开启重力计
+
+
 	//键盘监听事件
 	auto eventListenerKeyboard = EventListenerKeyboard::create();
 	eventListenerKeyboard->onKeyPressed = CC_CALLBACK_2(TestScene::onKeyPressed, this);
@@ -219,4 +225,9 @@ void TestScene::update(float delta)  //帧定时器
 	Controler::cloudPosControl(Layer_BG);       //云朵位置控制
 	keyBoardControler(delta);                   //键盘控制器进一步处理  =>  触控也调用
 	VirtualRockerAndButton::touchMoveControl(); //触摸行走控制
+}
+
+void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //“摇一摇”暂停游戏
+{
+	CCLOG("onAcceleration: acc->x: %f, acc->y: %f, acc->z: %f", acc->x, acc->y, acc->z);
 }

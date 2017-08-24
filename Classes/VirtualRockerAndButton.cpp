@@ -1,29 +1,28 @@
 /*
-¹¦ÄÜ£ºÔÚÆÁÄ»ÉÏ´´½¨ĞéÄâÒ¡¸ËºÍ°´¼ü
-×÷Õß£ºÕÅÌìÒí
-Ê±¼ä£º2017Äê8ÔÂ5ÈÕ01:28:43
-ÌØµã£ºµ¥ÀıÀà&Æ½Ì¨ºê×ÔÊÊÓ¦
+åŠŸèƒ½ï¼šåœ¨å±å¹•ä¸Šåˆ›å»ºè™šæ‹Ÿæ‘‡æ†å’ŒæŒ‰é”®
+ä½œè€…ï¼šå¼ å¤©ç¿¼
+æ—¶é—´ï¼š2017å¹´8æœˆ5æ—¥01:28:43
+ç‰¹ç‚¹ï¼šå•ä¾‹ç±»&å¹³å°å®è‡ªé€‚åº”
 */
 
 #include "VirtualRockerAndButton.h"
-//#define CC_PLATFORM_WIN32              3
 
 USING_NS_CC;
 
-//°´¼üÈİÆ÷ÉùÃ÷
-extern std::map<std::string, bool> map_keyPressed; //´æ·Å¼üÅÌ°´¼ü×´Ì¬
+//æŒ‰é”®å®¹å™¨å£°æ˜
+extern std::map<std::string, bool> map_keyPressed; //å­˜æ”¾é”®ç›˜æŒ‰é”®çŠ¶æ€
 
 
-//Ò¡¸ËºÍÍĞÅÌÂ·¾¶ĞÅÏ¢
+//æ‘‡æ†å’Œæ‰˜ç›˜è·¯å¾„ä¿¡æ¯
 const std::string circlePath = "PICTURE/VirtualCircle.png";
 const std::string pointPath = "PICTURE/VirtualPoint.png";
 
 
-//ÁÙÊ±²ã
+//ä¸´æ—¶å±‚
 Layer *tempLayer;
 
 
-//µ¥Àı¶ÔÏó
+//å•ä¾‹å¯¹è±¡
 VirtualRockerAndButton *VirtualRockerAndButton::virtualRockerAndButton = nullptr;
 
 
@@ -68,14 +67,14 @@ bool VirtualRockerAndButton::onTouchBegan(cocos2d::Touch * tTouch, cocos2d::Even
 
 	CCLOG("%f, %f", tTouch->getLocation().x, tTouch->getLocation().y);
 
-	//´¥ÃşÆğÊ¼µãÔÚÒ¡¸Ë·¶Î§ÄÚ²Å·µ»Øtrue
+	//è§¦æ‘¸èµ·å§‹ç‚¹åœ¨æ‘‡æ†èŒƒå›´å†…æ‰è¿”å›true
 	if (tempLayer->getChildByName("sp_VirtualCircle")->getBoundingBox().containsPoint(tTouch->getLocation()))
 	{
 		tempLayer->getChildByName("sp_VirtualPoint")->setPosition(tTouch->getLocation());
 		return true;
 	}
 	else
-		return false; //false»áµ¼ÖÂÏÂ¶şº¯Êı²»Ö´ĞĞ
+		return false; //falseä¼šå¯¼è‡´ä¸‹äºŒå‡½æ•°ä¸æ‰§è¡Œ
 }
 
 void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
@@ -86,38 +85,38 @@ void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Ev
 	auto VisSize = Director::getInstance()->getVisibleSize();
 
 	auto Nowdistance = std::abs(
-		cocos2d::ccpDistance(tTouch->getLocation(), tempLayer->getChildByName("sp_VirtualCircle")->getPosition()));  //µ±Ç°´¥ÃşµãÓëÍĞÅÌÔ²ĞÄ¾àÀë
+		cocos2d::ccpDistance(tTouch->getLocation(), tempLayer->getChildByName("sp_VirtualCircle")->getPosition()));  //å½“å‰è§¦æ‘¸ç‚¹ä¸æ‰˜ç›˜åœ†å¿ƒè·ç¦»
 
-	auto maxDistance = 130;   //Ò¡¸ËÓëÍĞÅÌ×î´ó¾àÀë
+	auto maxDistance = 130;   //æ‘‡æ†ä¸æ‰˜ç›˜æœ€å¤§è·ç¦»
 
-	if (Nowdistance < maxDistance) //ÊÖÖ¸»¬³öÍĞÅÌ
+	if (Nowdistance < maxDistance) //æ‰‹æŒ‡æ»‘å‡ºæ‰˜ç›˜
 	{
 		tempLayer->getChildByName("sp_VirtualPoint")->setPosition(tTouch->getLocation());
 	}
-	else //»¬³öÍĞÅÌ
+	else //æ»‘å‡ºæ‰˜ç›˜
 	{
-		auto Distancedifferent = Nowdistance - 130;  //ÊÖÖ¸³¬³ö¶î¶¨90µÄ¾àÀë²î
+		auto Distancedifferent = Nowdistance - 130;  //æ‰‹æŒ‡è¶…å‡ºé¢å®š90çš„è·ç¦»å·®
 
-		if (Distancedifferent > 0)  //È·¶¨»¬³ö
+		if (Distancedifferent > 0)  //ç¡®å®šæ»‘å‡º
 		{
 			Nowdistance = std::abs(
-				cocos2d::ccpDistance(tTouch->getLocation(), tempLayer->getChildByName("sp_VirtualCircle")->getPosition()));  //ÔÙÈ¡Öµ
+				cocos2d::ccpDistance(tTouch->getLocation(), tempLayer->getChildByName("sp_VirtualCircle")->getPosition()));  //å†å–å€¼
 
-			auto outSideA = std::abs(tTouch->getLocation().y - tempLayer->getChildByName("sp_VirtualCircle")->getPosition().y);  //Íâ²¿Èı½ÇĞÎA±ßµÄ¸ß¶È
+			auto outSideA = std::abs(tTouch->getLocation().y - tempLayer->getChildByName("sp_VirtualCircle")->getPosition().y);  //å¤–éƒ¨ä¸‰è§’å½¢Aè¾¹çš„é«˜åº¦
 
-			auto sinAngle = outSideA / Nowdistance;  //Èı½Çº¯ÊıÇó³öĞ±±ßÓëÖ±½Ç±ß£¨A±ß£©µÄ±ÈÀı
+			auto sinAngle = outSideA / Nowdistance;  //ä¸‰è§’å‡½æ•°æ±‚å‡ºæ–œè¾¹ä¸ç›´è§’è¾¹ï¼ˆAè¾¹ï¼‰çš„æ¯”ä¾‹
 
-			auto inSideA = sinAngle * 130;  //ÒòÎª¹²ÏíÒ»¸ö½Ç£¬Í¬Ò»¸ö±ÈÀı£¬¿ÉÇóĞ¡Èı½ÇĞÎ£¨A±ß£©µÄ¸ß¶È
+			auto inSideA = sinAngle * 130;  //å› ä¸ºå…±äº«ä¸€ä¸ªè§’ï¼ŒåŒä¸€ä¸ªæ¯”ä¾‹ï¼Œå¯æ±‚å°ä¸‰è§’å½¢ï¼ˆAè¾¹ï¼‰çš„é«˜åº¦
 
-			auto inSideB = std::sqrt(130 * 130 - inSideA*inSideA);  //¹´¹É¶¨Àí
+			auto inSideB = std::sqrt(130 * 130 - inSideA*inSideA);  //å‹¾è‚¡å®šç†
 
-			if (tTouch->getLocation().y < tempLayer->getChildByName("sp_VirtualCircle")->getPosition().y)  //Ò¡¸ËÍĞÅÌÒ²ÓĞÆä¡°×ø±êÏµ¡±£¬Ô­µãÎªÕıÖĞĞÄ
+			if (tTouch->getLocation().y < tempLayer->getChildByName("sp_VirtualCircle")->getPosition().y)  //æ‘‡æ†æ‰˜ç›˜ä¹Ÿæœ‰å…¶â€œåæ ‡ç³»â€ï¼ŒåŸç‚¹ä¸ºæ­£ä¸­å¿ƒ
 				inSideA *= -1;
 			if (tTouch->getLocation().x < tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x)
 				inSideB *= -1;
 
 
-			//Ò¡¸ËµÄ×îÖÕ×ø±êÒªÔÚÔ²ÅÌµÄÔ­µã×ø±ê»ù´¡ÉÏ¼Ó
+			//æ‘‡æ†çš„æœ€ç»ˆåæ ‡è¦åœ¨åœ†ç›˜çš„åŸç‚¹åæ ‡åŸºç¡€ä¸ŠåŠ 
 			tempLayer->getChildByName("sp_VirtualPoint")
 				->setPosition(Vec2(inSideB + tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x, inSideA + tempLayer->getChildByName("sp_VirtualCircle")->getPosition().y));
 
@@ -141,19 +140,19 @@ void VirtualRockerAndButton::touchMoveControl()
 		return;
 
 	if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
-		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x == 0) //¾²Ö¹×´Ì¬
+		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x == 0) //é™æ­¢çŠ¶æ€
 	{
 		map_keyPressed.find("left")->second = false;
 		map_keyPressed.find("right")->second = false;
 	}
 	else if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
-		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x > 30) //ÏòÓÒ×ß
+		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x > 30) //å‘å³èµ°
 	{
 		map_keyPressed.find("right")->second = true;
 		map_keyPressed.find("left")->second = false;
 	}
 	else if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
-		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x < -30) //Ïò×ó×ß
+		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x < -30) //å‘å·¦èµ°
 	{
 		map_keyPressed.find("left")->second = true;
 		map_keyPressed.find("right")->second = false;

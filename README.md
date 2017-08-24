@@ -20,3 +20,7 @@ Kind: 2D adventure game of action
 
 游戏种类：2D横版动作冒险类游戏
 
+
+![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/1.png)
+![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/2.png)
+![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/3.png)

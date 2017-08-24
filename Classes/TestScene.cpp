@@ -182,9 +182,6 @@ void TestScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 	case cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 		map_keyPressed.find("right")->second = false;
 		break;
-	case cocos2d::EventKeyboard::KeyCode::KEY_Z:
-		character.jump();
-		break;
 	default:
 		break;
 	}

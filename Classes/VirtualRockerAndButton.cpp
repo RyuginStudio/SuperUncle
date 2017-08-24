@@ -6,6 +6,7 @@
 */
 
 #include "VirtualRockerAndButton.h"
+//#define CC_PLATFORM_WIN32              3
 
 USING_NS_CC;
 
@@ -29,9 +30,8 @@ VirtualRockerAndButton *VirtualRockerAndButton::virtualRockerAndButton = nullptr
 
 void VirtualRockerAndButton::create(cocos2d::Layer *layer, cocos2d::Size visSize)
 {
-#if CC_PLATFORM_WIN32
-	return;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
 	auto sp_VirtualRockerCircle = Sprite::create(circlePath);
 	sp_VirtualRockerCircle->setName("sp_VirtualCircle");
@@ -49,9 +49,8 @@ void VirtualRockerAndButton::create(cocos2d::Layer *layer, cocos2d::Size visSize
 
 VirtualRockerAndButton * VirtualRockerAndButton::getInstance(Layer* layer, Size visSize)
 {
-#if CC_PLATFORM_WIN32
-	return nullptr;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return nullptr;
 
 	if (virtualRockerAndButton == nullptr)
 	{
@@ -64,9 +63,8 @@ VirtualRockerAndButton * VirtualRockerAndButton::getInstance(Layer* layer, Size 
 
 bool VirtualRockerAndButton::onTouchBegan(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
-#if CC_PLATFORM_WIN32
-	return false;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return false;
 
 	CCLOG("%f, %f", tTouch->getLocation().x, tTouch->getLocation().y);
 
@@ -82,9 +80,8 @@ bool VirtualRockerAndButton::onTouchBegan(cocos2d::Touch * tTouch, cocos2d::Even
 
 void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
-#if CC_PLATFORM_WIN32
-	return;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
 	auto VisSize = Director::getInstance()->getVisibleSize();
 
@@ -131,9 +128,8 @@ void VirtualRockerAndButton::onTouchesMoved(cocos2d::Touch * tTouch, cocos2d::Ev
 
 void VirtualRockerAndButton::onTouchEnded(cocos2d::Touch * tTouch, cocos2d::Event * eEvent)
 {
-#if CC_PLATFORM_WIN32
-	return;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
 	tempLayer->getChildByName("sp_VirtualPoint")
 		->setPosition(tempLayer->getChildByName("sp_VirtualCircle")->getPosition());
@@ -141,9 +137,8 @@ void VirtualRockerAndButton::onTouchEnded(cocos2d::Touch * tTouch, cocos2d::Even
 
 void VirtualRockerAndButton::touchMoveControl()
 {
-#if CC_PLATFORM_WIN32
-	return;
-#endif
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
 	if (tempLayer->getChildByName("sp_VirtualPoint")->getPosition().x
 		- tempLayer->getChildByName("sp_VirtualCircle")->getPosition().x == 0) //¾²Ö¹×´Ì¬

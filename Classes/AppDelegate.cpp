@@ -31,7 +31,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-	director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//ÎÞ±ß¿ò   //::SHOW_ALL); => last version
+	director->getOpenGLView()->setDesignResolutionSize(1272, 720, ResolutionPolicy::NO_BORDER);//无边框   //::SHOW_ALL); => last version
 
     // turn on display FPS
     director->setDisplayStats(true);

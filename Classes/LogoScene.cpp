@@ -35,7 +35,7 @@ bool LogoScene::init()
 	this->addChild(sp_logo);
 
 
-	SimpleAudioEngine::getInstance()->playEffect("SE/ElectricVszed.mp3");
+	SimpleAudioEngine::getInstance()->playEffect("SE/ElectricVszed.wav");
 
 	this->scheduleOnce(CC_CALLBACK_0(LogoScene::replaceScene, this), 3.5f, "replaceScene");
 

@@ -62,11 +62,6 @@ bool TestScene::init()
 	//虚拟摇杆及事件
 	VirtualRockerAndButton::getInstance(Layer_Control, visSize);
 
-	//瓦片地图的尺寸
-	Size mapNumbers = tiledMap->getMapSize();  //获取地图方块数量（元素个数）
-	Size tiledSize = tiledMap->getTileSize();  //获取瓦片元素的尺寸（单位元素尺寸）
-	Size MapSize = Size(mapNumbers.width*tiledSize.width, mapNumbers.height*tiledSize.height); //计算得出整个瓦片地图的尺寸
-
 	auto pChildrenArray = tiledMap->getChildren();
 
 	SpriteBatchNode* child = NULL;
@@ -78,7 +73,7 @@ bool TestScene::init()
 		child->getTexture()->setAliasTexParameters();  //为瓦片地图抗锯齿
 	}
 
-	Director::sharedDirector()->setProjection(kCCDirectorProjection2D);  //改为正交视图！  防止因为坐标的变换，出现显示问题
+    Director::getInstance()->setProjection(Director::Projection::_2D);  //改为正交视图！  防止因为坐标的变换，出现显示问题
 
 	character.initBeginPos(tiledMap);//初始化角色坐标
 
@@ -99,7 +94,7 @@ bool TestScene::init()
 	//重力计监听事件 => 摇一摇暂停游戏
 	auto eventListenerAcceleration = EventListenerAcceleration::create(CC_CALLBACK_2(TestScene::onAcceleration, this));
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerAcceleration, this);
-	setAccelerometerEnabled(true); //开启重力计
+    Device::setAccelerometerEnabled(true); //开启重力计
 
 
 	//键盘监听事件
@@ -195,8 +190,8 @@ void TestScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 
 void TestScene::keyBoardControler(float delta) //键盘控制器进一步处理 => 放入帧定时器
 {
-	if (map_keyPressed.find("left")->second && map_keyPressed.find("right")->second
-		|| !map_keyPressed.find("left")->second && !map_keyPressed.find("right")->second) //同时按下/抬起角色停滞不前
+	if ((map_keyPressed.find("left")->second && map_keyPressed.find("right")->second)
+		|| (!map_keyPressed.find("left")->second && !map_keyPressed.find("right")->second)) //同时按下/抬起角色停滞不前
 	{
 		character.move(0, delta);
 		return;

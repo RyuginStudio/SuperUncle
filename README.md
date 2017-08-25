@@ -23,7 +23,5 @@
 #### 游戏截图(Screen shot)：
 
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/1.png)
-
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/2.png)
-
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/3.png)

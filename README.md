@@ -22,7 +22,7 @@ Kind: 2D adventure game of action
 
 ==========================
 
-游戏截图：(screen shot)
-![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/1.png)
-![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/2.png)
-![image](https://github.com/vszed/SuperUncle/blob/master/PictureExample/3.png)
+游戏截图：(Screen shot)
+![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/1.png)
+![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/2.png)
+![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/3.png)

@@ -104,7 +104,7 @@ bool TestScene::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerKeyboard, this);
 
 
-	//¼àÌý´¥ÃþÊÂ¼þ
+	//¼àÌýÒ£¸Ð°´Å¥µÈ´¥ÃþÊÂ¼þ
 	auto eventListenerTouch = EventListenerTouchOneByOne::create();
 	eventListenerTouch->onTouchBegan = CC_CALLBACK_2(VirtualRockerAndButton::onTouchBegan, VirtualRockerAndButton::getInstance(Layer_UI, visSize));
 	eventListenerTouch->onTouchMoved = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesMoved, VirtualRockerAndButton::getInstance(Layer_UI, visSize));
@@ -224,5 +224,34 @@ void TestScene::update(float delta)  //Ö¡¶¨Ê±Æ÷
 
 void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //¡°Ò¡Ò»Ò¡¡±ÔÝÍ£ÓÎÏ·
 {
-	CCLOG("onAcceleration: acc->x: %f, acc->y: %f, acc->z: %f", acc->x, acc->y, acc->z);
+	//CCLOG("onAcceleration: acc->x: %f, acc->y: %f, acc->z: %f", acc->x, acc->y, acc->z);
+    
+    static Acceleration *tempAcc;
+    
+
+    //CCLOG("%lf", acc->timestamp);
+    
+    if(tempAcc != nullptr)
+    CCLOG("%f   %f   %f", acc->x - tempAcc->x, acc->y - tempAcc->y, acc->z - tempAcc->z);
+    
+    
+    
+    if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 0.5 || std::abs(acc->y - tempAcc->y) > 0.5 || std::abs(acc->z - tempAcc->z) > 0.5))
+    {
+        if(!Director::getInstance()->isPaused())
+        {
+            Director::getInstance()->pause();
+            SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+            SimpleAudioEngine::getInstance()->pauseAllEffects();
+            SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
+        }
+        else
+        {
+            Director::getInstance()->resume();
+            SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
+            SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+            SimpleAudioEngine::getInstance()->resumeAllEffects();
+        }
+
+    }
 }

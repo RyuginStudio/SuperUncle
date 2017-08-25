@@ -20,14 +20,10 @@
 
 </br>
 
-#### 游戏截图：(Screen shot)
+#### 游戏截图(Screen shot)：
 
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/1.png)
 
-</br>
-
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/2.png)
-
-</br>
 
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/3.png)

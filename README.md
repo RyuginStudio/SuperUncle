@@ -9,7 +9,6 @@
 #### Kind: 2D adventure game of action   
 
 </br>
-</br>
 
 #### 作者：VSZED STUDIO
 
@@ -20,10 +19,15 @@
 #### 游戏类型：2D横版动作冒险类游戏
 
 </br>
-</br>
 
 #### 游戏截图：(Screen shot)
 
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/1.png)
+
+</br>
+
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/2.png)
+
+</br>
+
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/3.png)

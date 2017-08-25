@@ -1,4 +1,4 @@
-## Name: SuperUncle
+# Name: SuperUncle
 
 Created by: VSZED STUDIO
 
@@ -8,9 +8,8 @@ Via: C++ & Cocos2dx 3.15
 
 Kind: 2D adventure game of action
 
-**==========================**
 
-## 游戏名称：超级大叔
+# 游戏名称：超级大叔
 
 作者：VSZED STUDIO
 
@@ -20,9 +19,8 @@ Kind: 2D adventure game of action
 
 游戏种类：2D横版动作冒险类游戏
 
-**==========================**
 
-## 游戏截图：(Screen shot)
+# 游戏截图：(Screen shot)
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/1.png)
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/2.png)
 ![image](https://github.com/vszed/SuperUncle/blob/master/ScreenShot/3.png)

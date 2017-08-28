@@ -241,6 +241,15 @@ void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //“摇
        
     if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 2 || std::abs(acc->y - tempAcc->y) > 2 || std::abs(acc->z - tempAcc->z) > 2))  // last version => 0.5
     {
+		if(!Director::getInstance()->isPaused())
 		Controler::GamePauseAndSettings(this, Layer_GameSettings, visSize);  //游戏暂停与设置
+		else
+		{
+			Layer_GameSettings->setVisible(false);           //未完成
+			Director::getInstance()->resume();
+			SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+			SimpleAudioEngine::getInstance()->resumeAllEffects();
+		}
+
     }
 }

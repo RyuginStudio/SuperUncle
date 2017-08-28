@@ -229,27 +229,28 @@ void TestScene::update(float delta)  //帧定时器
 
 void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //“摇一摇”暂停游戏
 {
-	//CCLOG("onAcceleration: acc->x: %f, acc->y: %f, acc->z: %f", acc->x, acc->y, acc->z);
+    static Acceleration lastAcc = *acc;
     
-    static Acceleration *tempAcc = nullptr;
+    struct timeval nowTimeval;
+    gettimeofday(&nowTimeval, NULL);
+    static long lLastTime = 0;
     
-    //CCLOG("%lf", acc->timestamp);
-    
-    if(tempAcc != nullptr)
-    CCLOG("%f   %f   %f", acc->x - tempAcc->x, acc->y - tempAcc->y, acc->z - tempAcc->z);
-    
-       
-    if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 2 || std::abs(acc->y - tempAcc->y) > 2 || std::abs(acc->z - tempAcc->z) > 2))  // last version => 0.5
+    //x,y,z方向的加速的平方加起来超过一个阈值视为“摇一摇”
+    if((acc->x - lastAcc.x)*(acc->x - lastAcc.x) + (acc->y - lastAcc.y)*(acc->y - lastAcc.y) + (acc->z - lastAcc.z)*(acc->z - lastAcc.z) >= 10)
     {
-		if(!Director::getInstance()->isPaused())
-		Controler::GamePauseAndSettings(this, Layer_GameSettings, visSize);  //游戏暂停与设置
-		else
-		{
-			Layer_GameSettings->setVisible(false);           //未完成
-			Director::getInstance()->resume();
-			SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-			SimpleAudioEngine::getInstance()->resumeAllEffects();
-		}
-
+        if(nowTimeval.tv_sec - lLastTime > 1.0)
+        {
+            if(!Director::getInstance()->isPaused())
+                Controler::GamePauseAndSettings(this, Layer_GameSettings, visSize);
+            else
+            {
+                Layer_GameSettings->setVisible(false);
+                Director::getInstance()->resume();
+                SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+                SimpleAudioEngine::getInstance()->resumeAllEffects();
+            }
+            lLastTime = nowTimeval.tv_sec;
+        }
     }
+    lastAcc = *acc;
 }

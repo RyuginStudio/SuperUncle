@@ -241,6 +241,6 @@ void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //“摇
        
     if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 2 || std::abs(acc->y - tempAcc->y) > 2 || std::abs(acc->z - tempAcc->z) > 2))  // last version => 0.5
     {
-        //未处理完毕
+		Controler::GamePauseAndSettings(this, Layer_GameSettings, visSize);  //游戏暂停与设置
     }
 }

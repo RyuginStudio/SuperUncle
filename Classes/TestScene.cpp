@@ -14,16 +14,17 @@ USING_NS_CC;
 using namespace std;
 using namespace CocosDenshion;
 
-static Layer* Layer_BG;  //背景+云
-static Layer* Layer_UI;  //金币+得分+时间
-static Layer* Layer_Control; //摇杆+按钮
+static Layer* Layer_BG;            //背景+云
+static Layer* Layer_UI;            //金币+得分+时间
+static Layer* Layer_Control;       //摇杆+按钮
+static Layer* Layer_GameSettings;  //游戏相关设置
 
 
-map<string, bool> map_keyPressed; //存放键盘按键状态
+map<string, bool> map_keyPressed;  //存放键盘按键状态
 
-extern bool isSporting;           //角色是否处于运动中
+extern bool isSporting;            //角色是否处于运动中
 
-static Size visSize;
+static Size visSize;               //游戏显示尺寸
 
 
 Scene* TestScene::createScene()
@@ -52,16 +53,20 @@ bool TestScene::init()
 	this->addChild(Layer_UI, 10);
 
 	Layer_Control = Layer::create();
-	Layer_UI->setName("Layer_Control");
+	Layer_Control->setName("Layer_Control");
 	this->addChild(Layer_Control, 11);
 
+	Layer_GameSettings = Layer::create();
+	Layer_GameSettings->setName("Layer_GameSettings");
+	this->addChild(Layer_GameSettings, 12);
 
-	//背景
+	//背景图片
 	Controler::createBackGround(Layer_BG, visSize); 
 
 	//虚拟摇杆及事件
 	VirtualRockerAndButton::getInstance(Layer_Control, visSize);
 
+	//抗锯齿
 	auto pChildrenArray = tiledMap->getChildren();
 
 	SpriteBatchNode* child = NULL;
@@ -70,32 +75,31 @@ bool TestScene::init()
 	for (auto it = pChildrenArray.begin(); it != pChildrenArray.end(); it++) {
 		pObject = *it;
 		child = (SpriteBatchNode*)pObject;
-		child->getTexture()->setAliasTexParameters();  //为瓦片地图抗锯齿
+		child->getTexture()->setAliasTexParameters();
 	}
 
-    Director::getInstance()->setProjection(Director::Projection::_2D);  //改为正交视图！  防止因为坐标的变换，出现显示问题
+	//正交视图
+    Director::getInstance()->setProjection(Director::Projection::_2D);  
 
-	character.initBeginPos(tiledMap);//初始化角色坐标
-
+	//角色初始化相关
+	character.initBeginPos(tiledMap);
 	character.sp_man->setGlobalZOrder(1);
-
 	this->addChild(character.sp_man);
 
-	this->addChild(tiledMap, 9); //加载瓦片地图
+	//加载瓦片地图
+	this->addChild(tiledMap, 9); 
 
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("res/BGM/Mission1BGM.mp3", true);       //BGM => loop
-
+	//BGM
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("res/BGM/Mission1BGM.mp3", true);
 
 	//定时器
 	this->schedule(CC_CALLBACK_1(TestScene::update_per_second, this), 1.0f, "oneSecond");    //游戏时间衰减，每1.0秒后调用
 	this->scheduleUpdate();
 
-
 	//重力计监听事件 => 摇一摇暂停游戏
 	auto eventListenerAcceleration = EventListenerAcceleration::create(CC_CALLBACK_2(TestScene::onAcceleration, this));
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerAcceleration, this);
     Device::setAccelerometerEnabled(true); //开启重力计
-
 
 	//键盘监听事件
 	auto eventListenerKeyboard = EventListenerKeyboard::create();
@@ -103,14 +107,12 @@ bool TestScene::init()
 	eventListenerKeyboard->onKeyReleased = CC_CALLBACK_2(TestScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerKeyboard, this);
 
-
 	//监听遥感按钮等触摸事件
 	auto eventListenerTouch = EventListenerTouchOneByOne::create();
 	eventListenerTouch->onTouchBegan = CC_CALLBACK_2(VirtualRockerAndButton::onTouchBegan, VirtualRockerAndButton::getInstance(Layer_UI, visSize));
 	eventListenerTouch->onTouchMoved = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesMoved, VirtualRockerAndButton::getInstance(Layer_UI, visSize));
 	eventListenerTouch->onTouchEnded = CC_CALLBACK_2(VirtualRockerAndButton::onTouchEnded, VirtualRockerAndButton::getInstance(Layer_UI, visSize));
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerTouch, this);
-
 
 	//初始化即将操控的map容器
 	map_keyPressed.insert(pair<string, bool>("up", false));
@@ -161,6 +163,9 @@ void TestScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		break;
 	case cocos2d::EventKeyboard::KeyCode::KEY_F2:   //金币数量测试
 		coin += 100000000000;
+		break;
+	case cocos2d::EventKeyboard::KeyCode::KEY_F3:   //游戏暂停测试
+		Controler::GamePauseAndSettings(this, Layer_GameSettings, visSize);
 		break;
 	default:
 		break;
@@ -226,32 +231,16 @@ void TestScene::onAcceleration(Acceleration * acc, Event * unused_event)  //“摇
 {
 	//CCLOG("onAcceleration: acc->x: %f, acc->y: %f, acc->z: %f", acc->x, acc->y, acc->z);
     
-    static Acceleration *tempAcc;
+    static Acceleration *tempAcc = nullptr;
     
-
     //CCLOG("%lf", acc->timestamp);
     
     if(tempAcc != nullptr)
     CCLOG("%f   %f   %f", acc->x - tempAcc->x, acc->y - tempAcc->y, acc->z - tempAcc->z);
     
-    
-    
-    if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 0.5 || std::abs(acc->y - tempAcc->y) > 0.5 || std::abs(acc->z - tempAcc->z) > 0.5))
+       
+    if(tempAcc != nullptr && (std::abs(acc->x - tempAcc->x) > 2 || std::abs(acc->y - tempAcc->y) > 2 || std::abs(acc->z - tempAcc->z) > 2))  // last version => 0.5
     {
-        if(!Director::getInstance()->isPaused())
-        {
-            Director::getInstance()->pause();
-            SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-            SimpleAudioEngine::getInstance()->pauseAllEffects();
-            SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
-        }
-        else
-        {
-            Director::getInstance()->resume();
-            SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
-            SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-            SimpleAudioEngine::getInstance()->resumeAllEffects();
-        }
-
+        //未处理完毕
     }
 }

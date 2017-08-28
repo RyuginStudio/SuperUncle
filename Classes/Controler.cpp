@@ -1,14 +1,16 @@
 /*
-时间：2017年8月12日00:31:21
-作者：张天翼
-功能：游戏总控
+*时间：2017年8月12日00:31:21
+*作者：vszed
+*功能：游戏总控
 */
 
 #include <iostream>
 #include "Controler.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;
+using namespace CocosDenshion;
 
 
 //UI资源声明
@@ -207,10 +209,26 @@ void Controler::tiledMapScroll(Layer * layer, Layer * layer_BG, Layer *  layer_U
 	}
 }
 
-void Controler::createBackGround(Layer *Layer_BG, Size visSize)//创建游戏背景
+void Controler::createBackGround(Layer *Layer_BG, Size visSize)  //创建游戏背景
 {
-	Sprite* background = Sprite::create("res/MAP/backGround1.png");//游戏背景
+	Sprite* background = Sprite::create("res/MAP/backGround1.png");  //游戏背景
 	background->setAnchorPoint(Point(0, 0));
 	background->setPosition(Point(0, visSize.height*0.14));  //设定背景位置
 	Layer_BG->addChild(background, 2);  //创建游戏背景
+}
+
+void Controler::GamePauseAndSettings(Layer *father_layer, Layer *Layer_GameSettings, Size visSize) //游戏暂停与设置
+{
+	Director::getInstance()->pause();
+	SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+	SimpleAudioEngine::getInstance()->pauseAllEffects();
+	SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
+
+	auto sp_test = Sprite::create("PICTURE/time_UI.png");
+	sp_test->setPosition(Vec2(visSize.width / 2, visSize.height / 2));
+	Layer_GameSettings->addChild(sp_test);
+
+	Layer_GameSettings->setPosition(Vec2(-father_layer->getPosition().x, -father_layer->getPosition().y));	
+
+	Layer_GameSettings->setVisible(true);  //游戏暂停时，该层=>可见
 }

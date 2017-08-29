@@ -11,9 +11,9 @@ public:
 
 	virtual bool init();
 
-	CREATE_FUNC(LivesScene);
-
 	void missionJump();
+
+	CREATE_FUNC(LivesScene);
 };
 
 #endif // !__LIVES_SCENE_H__

@@ -1,5 +1,5 @@
 #ifndef __LIVES_SCENE_H__
-#define __LIVES_SECNE_H__
+#define __LIVES_SCENE_H__
 
 #include "cocos2d.h"
 
@@ -16,4 +16,4 @@ public:
 	void missionJump();
 };
 
-#endif // !__LIVE_SCENE_H__
+#endif // !__LIVES_SCENE_H__

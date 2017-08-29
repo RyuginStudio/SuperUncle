@@ -127,13 +127,13 @@ bool TestScene::init()
 	return true;
 }
 
-void TestScene::update_per_second(float delta) //1s定时器
+void TestScene::update_per_second(float delta)
 {
 	//Controler::CreateUpdateUI(); //创建|刷新时间等UI
 	Controler::createCloud();
 }
 
-void TestScene::update(float delta)  //帧定时器
+void TestScene::update(float delta)
 {
 	Controler::tiledMapScroll(delta);           //地图滚动
 	Controler::cloudPosControl();               //云朵位置控制

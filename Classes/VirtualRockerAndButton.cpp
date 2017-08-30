@@ -80,10 +80,7 @@ void VirtualRockerAndButton::onTouchesMoved(Touch * tTouch, Event * eEvent)
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		return;
 
-	auto VisSize = Director::getInstance()->getVisibleSize();
-
-	auto Nowdistance = std::abs(
-		ccpDistance(tTouch->getLocation(), Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //当前触摸点与托盘圆心距离
+	auto Nowdistance = std::abs(tTouch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //当前触摸点与托盘圆心距离
 
 	auto maxDistance = 130;   //摇杆与托盘最大距离
 
@@ -97,8 +94,7 @@ void VirtualRockerAndButton::onTouchesMoved(Touch * tTouch, Event * eEvent)
 
 		if (Distancedifferent > 0)  //确定滑出
 		{
-			Nowdistance = std::abs(
-				ccpDistance(tTouch->getLocation(), Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //再取值
+			Nowdistance = std::abs(tTouch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //再取值
 
 			auto outSideA = std::abs(tTouch->getLocation().y - Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y);  //外部三角形A边的高度
 

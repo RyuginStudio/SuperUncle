@@ -27,7 +27,7 @@ bool QuitScene::init()
 		auto sprite_mario_quit = Sprite::create("res/PICTURE/MarioForQuit.jpg"); //斯大林
 		sprite_mario_quit->setPosition(Point(win_size.width / 2, win_size.height / 1.65 - 20));
 
-		auto label_Stalin = Label::create("Mario Stalin", "NewSuperMarioFontU.ttf", 80);
+		auto label_Stalin = Label::createWithTTF("Mario Stalin", "NewSuperMarioFontU.ttf", 80);
 		label_Stalin->setPosition(Point(win_size.width / 2, win_size.height / 5 - 25));
 
 		this->addChild(sprite_mario_quit);
@@ -40,7 +40,7 @@ bool QuitScene::init()
 		auto sprite_mario_quit2 = Sprite::create("res/PICTURE/MarioForQuit2.jpg"); //马里奥
 		sprite_mario_quit2->setPosition(Point(win_size.width / 2, win_size.height / 1.65 - 20));
 
-		auto label_Mario = Label::create("Mario", "NewSuperMarioFontU.ttf", 80);
+		auto label_Mario = Label::createWithTTF("Mario", "NewSuperMarioFontU.ttf", 80);
 		label_Mario->setPosition(Point(win_size.width / 2, win_size.height / 5 - 25));
 
 		this->addChild(sprite_mario_quit2);
@@ -53,7 +53,7 @@ bool QuitScene::init()
 		auto sprite_mario_quit3 = Sprite::create("res/PICTURE/MarioForQuit3.jpg"); //路易基
 		sprite_mario_quit3->setPosition(Point(win_size.width / 2, win_size.height / 1.65 - 20));
 
-		auto label_Luigi = Label::create("Luigi Mario", "NewSuperMarioFontU.ttf", 80);
+		auto label_Luigi = Label::createWithTTF("Luigi Mario", "NewSuperMarioFontU.ttf", 80);
 		label_Luigi->setPosition(Point(win_size.width / 2, win_size.height / 5 - 25));
 
 		this->addChild(sprite_mario_quit3);

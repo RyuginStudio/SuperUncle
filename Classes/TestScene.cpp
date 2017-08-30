@@ -22,7 +22,6 @@ Layer* Layer_GameScene;     //游戏场景
 
 TMXTiledMap *tiledMap;      //瓦片地图
 
-extern map<string, bool> map_keyPressed;
 extern Size visSize;
 
 
@@ -117,12 +116,6 @@ bool TestScene::init()
 	eventListenerTouch->onTouchMoved = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesMoved, VirtualRockerAndButton::getInstance());
 	eventListenerTouch->onTouchEnded = CC_CALLBACK_2(VirtualRockerAndButton::onTouchEnded, VirtualRockerAndButton::getInstance());
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerTouch, this);
-
-	//初始化即将操控的map容器
-	map_keyPressed.insert(pair<string, bool>("up", false));
-	map_keyPressed.insert(pair<string, bool>("down", false));
-	map_keyPressed.insert(pair<string, bool>("left", false));
-	map_keyPressed.insert(pair<string, bool>("right", false));
 
 	return true;
 }

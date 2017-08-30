@@ -66,6 +66,11 @@ Controler::~Controler()
 
 Controler::Controler()
 {
+	//初始化即将操控的map容器
+	map_keyPressed.insert(pair<string, bool>("up", false));
+	map_keyPressed.insert(pair<string, bool>("down", false));
+	map_keyPressed.insert(pair<string, bool>("left", false));
+	map_keyPressed.insert(pair<string, bool>("right", false));
 }
 //==============单例模式==============//
 

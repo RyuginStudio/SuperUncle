@@ -9,12 +9,11 @@
 #define __CONTROLER_H__
 #include "cocos2d.h"
 
-class Controler : public cocos2d::Sprite
+class Controler
 {
 public:
 
 	//==============单例模式==============//
-	static Controler *controler;
 	static Controler* getInstance();
 	~Controler();
 	//==============单例模式==============//
@@ -41,6 +40,8 @@ public:
 	static void GamePauseAndSettings();      //游戏暂停与设置
 
 private:
+
+	static Controler *controler;
 
 	Controler();
 };

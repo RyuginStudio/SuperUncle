@@ -16,7 +16,6 @@ class Character : public Node
 public:
 
 	//============单例模式============//
-	static Character * character;
 	static Character * getInstance();
 	~Character();
 	//==============单例模式==========//
@@ -32,6 +31,8 @@ public:
 	Sprite3D * sp_man;  //3D精灵
 
 private:
+
+	static Character * character;
 
 	Character();
 

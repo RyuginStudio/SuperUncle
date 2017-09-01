@@ -18,7 +18,8 @@ Layer* Layer_BG;            //背景+云
 Layer* Layer_UI;            //金币+得分+时间
 Layer* Layer_Control;       //摇杆+按钮
 Layer* Layer_GameSettings;  //游戏相关设置
-Layer* Layer_GameScene;     //游戏场景
+Layer* Layer_TitledMap;     //瓦片地图
+
 
 TMXTiledMap *tiledMap;      //瓦片地图
 
@@ -58,7 +59,9 @@ bool TestScene::init()
 	Layer_GameSettings->setName("Layer_GameSettings");
 	this->addChild(Layer_GameSettings, 12);
 
-	Layer_GameScene = this;
+	Layer_TitledMap = Layer::create();
+	Layer_TitledMap->setName("Layer_TitledMap");
+	this->addChild(Layer_TitledMap, 1);
 
 	tiledMap = cocos2d::TMXTiledMap::create("MAP/Mission1.tmx");
 
@@ -90,7 +93,7 @@ bool TestScene::init()
 	this->addChild(Character::getInstance()->sp_man);
 
 	//加载瓦片地图
-	this->addChild(tiledMap, 9);
+	Layer_TitledMap->addChild(tiledMap);
 
 	//BGM
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("res/BGM/Mission1BGM.mp3", true);
@@ -122,7 +125,7 @@ bool TestScene::init()
 
 void TestScene::update_per_second(float delta)
 {
-	//Controler::CreateUpdateUI(); //创建|刷新时间等UI
+	//Controler::CreateUpdateUI(); //创建|刷新时间等UI  =>   后期得分方式改为：观察者模式
 	Controler::createCloud();
 }
 

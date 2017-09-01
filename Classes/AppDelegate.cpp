@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "LogoScene.h"
+#include "TestScene.h"
 
 USING_NS_CC;
 
@@ -28,7 +29,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-			glview = GLViewImpl::createWithRect("Super Uncle  V1.0", Rect(0, 0, 1272, 720)); //win32
+			glview = GLViewImpl::createWithRect("Super Uncle  V1.0", Rect(0, 0, 127.2, 72.0)); //win32
 		else
 			glview = GLViewImpl::createWithRect("Super Uncle  V1.0", Rect(0, 0, 1234, 750)); //ios、Android平台
 
@@ -50,7 +51,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	FileUtils::getInstance()->addSearchPath("res");
 
 	// create a scene. it's an autorelease object
-	auto scene = LogoScene::createScene();
+	auto scene = TestScene::createScene();
 
 	director->runWithScene(scene);
 

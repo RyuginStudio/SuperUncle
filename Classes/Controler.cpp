@@ -15,6 +15,11 @@ USING_NS_CC;
 using namespace std;
 using namespace CocosDenshion;
 
+//¶¨Òå£ºÏÔÊ¾³ß´ç
+Size visSize;
+
+//ÉùÃ÷£ºCharacterÊµÀı
+Character* CharaIns;
 
 //ÉùÃ÷£º½ÇÉ«ÔË¶¯ÅĞ¶¨
 extern bool isSporting;
@@ -30,10 +35,7 @@ static Label *time_left;
 static Label *get_coin_number;
 static Label *get_score;
 
-//¶¨Òå£ºÏÔÊ¾³ß´ç
-Size visSize;
-
-//ÉùÃ÷£ºÏà¹ØÊı¾İ
+//ÉùÃ÷£ºUIÏà¹ØÊı¾İ
 extern int coin;
 extern int gameTime;
 extern int score;
@@ -43,10 +45,16 @@ extern Layer* Layer_BG;
 extern Layer* Layer_UI;
 extern Layer* Layer_Control;
 extern Layer* Layer_GameSettings;
-extern Layer* Layer_GameScene;
+extern Layer* Layer_TitledMap;
+
 
 //ÉùÃ÷£ºÍßÆ¬µØÍ¼
 extern TMXTiledMap *tiledMap;
+
+//¶¨Òå£ºÍßÆ¬µØÍ¼Êı¾İ
+Size mapNumbers;
+Size tiledSize;
+Size MapSize;
 
 
 //==============µ¥ÀıÄ£Ê½==============//
@@ -71,6 +79,14 @@ Controler::Controler()
 	map_keyPressed.insert(pair<string, bool>("down", false));
 	map_keyPressed.insert(pair<string, bool>("left", false));
 	map_keyPressed.insert(pair<string, bool>("right", false));
+
+	//»ñÈ¡CharacterÊµÀı
+	CharaIns = Character::getInstance();
+
+	//»ñÈ¡ÍßÆ¬µØÍ¼Êı¾İ
+	mapNumbers = tiledMap->getMapSize();  //ÔªËØ¸öÊı
+	tiledSize = tiledMap->getTileSize();  //µ¥Î»ÔªËØ³ß´ç
+	MapSize = Size(mapNumbers.width*tiledSize.width, mapNumbers.height*tiledSize.height); //ÍßÆ¬µØÍ¼³ß´ç
 }
 //==============µ¥ÀıÄ£Ê½==============//
 
@@ -78,9 +94,10 @@ Controler::Controler()
 void Controler::createCloud()
 {
 	auto cloud_Big = Sprite::create("PICTURE/cloud_Big.png");
+	cloud_Big->setAnchorPoint(Vec2(1, 0.5));
 	vector_Cloud.push_back(cloud_Big);
 	cloud_Big->setPosition(
-		Vec2(visSize.width*1.1 + Character::getInstance()->sp_man->getPosition().x, visSize.height / random(1.0, 1.2)));
+		Vec2(visSize.width + cloud_Big->getContentSize().width - Layer_BG->getPosition().x, visSize.height / random(1.0, 1.2)));
 	Layer_BG->addChild(cloud_Big, 4);
 }
 
@@ -94,7 +111,7 @@ void Controler::cloudPosControl()
 			int pos_y = (int)vector_Cloud[idx]->getPosition().y;
 			vector_Cloud[idx]->setPosition(Point(pos_x -= 1, pos_y));  //Ã¿Ö¡¶¼¸Ä±äÔÆ¶äµÄÎ»ÖÃ
 
-			if (pos_x < -vector_Cloud[idx]->getContentSize().width)  //Èç¹û¾«ÁéµÄ×ø±ê£¨ÍêÈ«ÒşÃ»£© 
+			if (pos_x < 0)
 			{
 				Layer_BG->removeChild(vector_Cloud[idx]);
 				vector_Cloud.erase(vector_Cloud.begin() + idx);  //É¾³ıÍêÈ«ÒşÃ»µÄµ±Ç°ÔªËØ
@@ -193,72 +210,22 @@ void Controler::CreateUpdateUI()
 
 void Controler::tiledMapScroll(float delta)
 {
-	Size winSize = Director::getInstance()->getWinSize();   //»ñÈ¡ÆÁÄ»µÄ³ß´ç
+	auto pos_Character = CharaIns->sp_man->getPosition();
 
-	Size mapNumbers = tiledMap->getMapSize();  //»ñÈ¡µØÍ¼·½¿éÊıÁ¿£¨ÔªËØ¸öÊı£©
-	Size tiledSize = tiledMap->getTileSize();  //»ñÈ¡ÍßÆ¬ÔªËØµÄ³ß´ç£¨µ¥Î»ÔªËØ³ß´ç£©
-	Size MapSize = Size(mapNumbers.width*tiledSize.width, mapNumbers.height*tiledSize.height); //¼ÆËãµÃ³öÕû¸öÍßÆ¬µØÍ¼µÄ³ß´ç
-
-	auto sprite_pos = Character::getInstance()->sp_man->getPosition(); //»ñÈ¡½ÇÉ«×ø±ê
-
-	 //Èç¹ûÖ÷½Ç×ø±êĞ¡ÓÚÆÁÄ»µÄÒ»°ë£¬ÄÇÃ´È¡ÆÁÄ»ÖĞµã×ø±ê£¬·ñÔò£¬È¡½ÇÉ«×ø±ê
-	float x = std::max(sprite_pos.x, winSize.width / 2);
-	float y = std::max(sprite_pos.y, winSize.height / 2);
-
-	//Èç¹ûx,yµÄ×ø±ê´óÓÚÓÒÉÏ½ÇµÄ¼«ÏŞÖµ£¬ÔòÈ¡¼«ÏŞÖµµÄ×ø±ê£¨¼«ÏŞÖµÊÇÖ¸²»ÈÃµØÍ¼³¬¹ıÆÁÄ»Ôì³É³öÏÖºÚ±ßµÄ¼«ÏŞ×ø±ê£©
-	x = std::min(x, MapSize.width - winSize.width / 2);
-	y = std::min(y, MapSize.height - winSize.height / 2);
-
-	//Ä¿±êµã
-	Point destPos = Point(x, y);
-
-	//ÆÁÄ»ÖĞĞÄµã
-	Point centerPos = Point(winSize.width / 2, winSize.height / 2);
-
-	//¼ÆËãÆÁÄ»ÖĞĞÄµãºÍÒªÒÆ¶¯ÖÁµÄÄ¿µÄµãÖ®¼äµÄ¾àÀë
-	Point distance = centerPos - destPos;
-
-	static Point temp_distance;
-	if (temp_distance.x > distance.x)  //³¡¾°×óÒÆ
+	if (pos_Character.x >= visSize.width / 2 && CharaIns->characterStatus.MoveRight 
+		&& Layer_TitledMap->getPosition().x >= visSize.width - MapSize.width + tiledSize.width * 1.5) //¶à+1.5¿éÍß¿í¶È·ÀºÚ±ß
 	{
-		auto pos_layer = Layer_GameScene->getPosition();
-		if (x >= MapSize.width - winSize.width / 2) //·ÀµØÍ¼ºÚ±ß
-			Layer_GameScene->setPosition(distance);
-		else
-			Layer_GameScene->setPosition(Point(pos_layer.x - delta * 300, pos_layer.y));
+		CharaIns->set_speed(0);    //½ÇÉ«²»ÒÆ¶¯
 
+		//²ãÒÆ¶¯
+		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-delta * 280, 0));
+		Layer_TitledMap->runAction(ac_TitledMap);
 
-		auto pos_layerBG = Layer_BG->getPosition();
-		Layer_BG->setPosition(Point(pos_layerBG.x + delta * 280, pos_layerBG.y));
-
-		auto pos_layerUI = Layer_UI->getPosition();
-		Layer_UI->setPosition(Point(pos_layerUI.x + delta * 300, pos_layerUI.y));
-
-		auto pos_layerControler = Layer_Control->getPosition();
-		Layer_Control->setPosition(Point(pos_layerControler.x + delta * 300, pos_layerControler.y));
-
-		temp_distance.x = distance.x;
+		auto ac_Layer_BG = MoveBy::create(delta * 0.8f, Point(-delta * 30, 0));
+		Layer_BG->runAction(ac_Layer_BG);
 	}
-	else if (temp_distance.x < distance.x)  //³¡¾°ÓÒÒÆ
-	{
-		auto pos_layer = Layer_GameScene->getPosition();
-		if (x <= winSize.width / 2)
-			Layer_GameScene->setPosition(distance);
-		else
-			Layer_GameScene->setPosition(Point(pos_layer.x + delta * 300, pos_layer.y));
-
-
-		auto pos_layerBG = Layer_BG->getPosition();
-		Layer_BG->setPosition(Point(pos_layerBG.x - delta * 280, pos_layerBG.y));
-
-		auto pos_layerUI = Layer_UI->getPosition();
-		Layer_UI->setPosition(Point(pos_layerUI.x - delta * 300, pos_layerUI.y));
-
-		auto pos_layerControler = Layer_Control->getPosition();
-		Layer_Control->setPosition(Point(pos_layerControler.x - delta * 300, pos_layerControler.y));
-
-		temp_distance.x = distance.x;
-	}
+	else
+		CharaIns->set_speed(300);  //½ÇÉ«ÕæÊµÒÆ¶¯
 }
 
 void Controler::createBackGround()  //´´½¨ÓÎÏ·±³¾°
@@ -286,7 +253,7 @@ void Controler::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		map_keyPressed.find("right")->second = true;
 		break;
 	case cocos2d::EventKeyboard::KeyCode::KEY_Z:
-		Character::getInstance()->jump();
+		CharaIns->jump();
 		break;
 	case cocos2d::EventKeyboard::KeyCode::KEY_P:
 	{
@@ -350,18 +317,28 @@ void Controler::keyBoardControler(float delta) //¼üÅÌ¿ØÖÆÆ÷½øÒ»²½´¦Àí => ·ÅÈëÖ¡¶
 	if ((map_keyPressed.find("left")->second && map_keyPressed.find("right")->second)
 		|| (!map_keyPressed.find("left")->second && !map_keyPressed.find("right")->second)) //Í¬Ê±°´ÏÂ/Ì§Æğ½ÇÉ«Í£ÖÍ²»Ç°
 	{
-		Character::getInstance()->move(0, delta);
+		//¸ü¸Ä½ÇÉ«×´Ì¬
+		CharaIns->characterStatus.MoveLeft = false;
+		CharaIns->characterStatus.MoveRight = false;
+
+		CharaIns->move(0, delta);
 		return;
 	}
-	if (map_keyPressed.find("left")->second == true)  //×ó¼ü°´ÏÂ
+	if (map_keyPressed.find("left")->second == true)            //×ó
 	{
+		CharaIns->characterStatus.MoveLeft = true;
+		CharaIns->characterStatus.MoveRight = false;
+
 		isSporting = true;
-		Character::getInstance()->move(-1, delta);
+		CharaIns->move(-1, delta);
 	}
-	if (map_keyPressed.find("right")->second == true)  //ÓÒ¼ü°´ÏÂ
+	else if (map_keyPressed.find("right")->second == true)      //ÓÒ
 	{
+		CharaIns->characterStatus.MoveRight = true;
+		CharaIns->characterStatus.MoveLeft = false;
+
 		isSporting = true;
-		Character::getInstance()->move(1, delta);
+		CharaIns->move(1, delta);
 	}
 }
 
@@ -407,6 +384,5 @@ void Controler::GamePauseAndSettings() //ÔİÍ£Ïà¹ØÉèÖÃ
 	auto sp_test = Sprite::create("PICTURE/time_UI.png");
 	sp_test->setPosition(Vec2(visSize.width / 2, visSize.height / 2));
 	Layer_GameSettings->addChild(sp_test);
-	Layer_GameSettings->setPosition(Vec2(-Layer_GameScene->getPosition().x, -Layer_GameScene->getPosition().y));
 	Layer_GameSettings->setVisible(true);
 }

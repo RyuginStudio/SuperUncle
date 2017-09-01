@@ -28,7 +28,20 @@ public:
 
 	int get_speed();
 
+	void set_speed(int newSpeed);
+
 	Sprite3D * sp_man;  //3D¾«Áé
+
+
+	struct CharacterStatus       //½ÇÉ«×´Ì¬
+	{
+		bool MoveLeft = false;
+		bool MoveRight = false;
+		bool InSky = false;
+
+	}characterStatus;
+
+
 
 private:
 

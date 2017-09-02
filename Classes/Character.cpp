@@ -40,60 +40,6 @@ Character::Character()
 
 	sp_man->runAction(ac_RotateTo);
 
-
-	////精灵刚体初始化
-	//b2BodyDef bodydef;
-	//bodydef.type = b2_dynamicBody;
-	//bodydef.position.Set(Character::getInstance()->sp_man->getPosition().x / PTM_RATIO, Character::getInstance()->sp_man->getPosition().y / PTM_RATIO);
-
-	//body_man = TestScene::getInstance()->world->CreateBody(&bodydef);
-	//body_man->SetUserData(Character::getInstance()->sp_man);
-
-	////PhysicsEditor:不规则刚体数据
-	///*b2Vec2 points[27] = {
-	//b2Vec2(12.00000 / PTM_RATIO,30.00000 / PTM_RATIO), b2Vec2(12.00000 / PTM_RATIO,36.00000 / PTM_RATIO),b2Vec2(20.00000 / PTM_RATIO,34.00000 / PTM_RATIO),
-	//b2Vec2(12.00000 / PTM_RATIO,36.00000 / PTM_RATIO),b2Vec2(12.00000 / PTM_RATIO,22.00000 / PTM_RATIO), b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO),
-	//b2Vec2(-12.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(-20.00000 / PTM_RATIO,30.00000 / PTM_RATIO),b2Vec2(-4.00000 / PTM_RATIO,43.00000 / PTM_RATIO),
-	//b2Vec2(9.00000 / PTM_RATIO,46.00000 / PTM_RATIO),b2Vec2(21.00000 / PTM_RATIO,17.00000 / PTM_RATIO), b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),
-	//b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(12.00000 / PTM_RATIO,22.00000 / PTM_RATIO),b2Vec2(20.00000 / PTM_RATIO,23.00000 / PTM_RATIO),
-	//b2Vec2(11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO),b2Vec2(-11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO), b2Vec2(4.00000 / PTM_RATIO,-35.00000 / PTM_RATIO),
-	//b2Vec2(11.00000 / PTM_RATIO,-38.00000 / PTM_RATIO), b2Vec2(-11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO),b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO),
-	//b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(4.00000 / PTM_RATIO,-35.00000 / PTM_RATIO),
-	//b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(12.00000 / PTM_RATIO,-12.00000 / PTM_RATIO) };*/
-	//b2Vec2 points[27] = {
-	//	b2Vec2(20.000 / PTM_RATIO,34.000 / PTM_RATIO), b2Vec2(12.000 / PTM_RATIO,36.000 / PTM_RATIO),b2Vec2(12.000 / PTM_RATIO,30.000 / PTM_RATIO),
-	//	b2Vec2(9.000 / PTM_RATIO,46.000 / PTM_RATIO),b2Vec2(-4.000 / PTM_RATIO,43.000 / PTM_RATIO), b2Vec2(-20.000 / PTM_RATIO,30.000 / PTM_RATIO),
-	//	b2Vec2(-12.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(-8.000 / PTM_RATIO,9.000 / PTM_RATIO),b2Vec2(12.000 / PTM_RATIO,22.000 / PTM_RATIO),
-	//	b2Vec2(12.000 / PTM_RATIO,36.000 / PTM_RATIO),
-
-	//	b2Vec2(20.000 / PTM_RATIO,23.000 / PTM_RATIO), b2Vec2(12.000 / PTM_RATIO,22.000 / PTM_RATIO),
-	//	b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(5.000 / PTM_RATIO,7.000 / PTM_RATIO),b2Vec2(21.000 / PTM_RATIO,17.000 / PTM_RATIO),
-
-
-
-
-	//	b2Vec2(11.00000 / PTM_RATIO,-38.000 / PTM_RATIO),b2Vec2(4.000 / PTM_RATIO,-35.000 / PTM_RATIO), b2Vec2(-11.000 / PTM_RATIO,-46.000 / PTM_RATIO),
-	//	b2Vec2(11.000 / PTM_RATIO,-46.000 / PTM_RATIO),b2Vec2(4.000 / PTM_RATIO,-35.000 / PTM_RATIO), b2Vec2(6.000 / PTM_RATIO,-17.000 / PTM_RATIO),
-	//	b2Vec2(5.000 / PTM_RATIO,7.000 / PTM_RATIO),b2Vec2(-8.000 / PTM_RATIO,9.000 / PTM_RATIO),b2Vec2(-11.000 / PTM_RATIO,-46.000 / PTM_RATIO),
-	//	b2Vec2(12.000 / PTM_RATIO,-12.000 / PTM_RATIO),b2Vec2(5.000 / PTM_RATIO,7.000 / PTM_RATIO), b2Vec2(6.000 / PTM_RATIO,-17.000 / PTM_RATIO) };
-
-
-	//b2PolygonShape shape_sp_man;
-	//shape_sp_man.Set(points, 27);
-
-	//b2FixtureDef fixturedef;
-	//fixturedef.density = 1.0f;   //密度
-	//fixturedef.friction = 0.3f;  //摩擦
-	//fixturedef.shape = &shape_sp_man;
-	//body_man->CreateFixture(&fixturedef);
-
-
-
-
-
-
-
-
 }
 
 Character::~Character()
@@ -136,6 +82,9 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 
 	auto pos = sp_man->getPosition();
 	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                     //转向
+
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + 0.1, body_man->GetPosition().y), delta);
+
 	//sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * speed, pos.y));  //移动
 }
 

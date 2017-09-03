@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
 #include "Character.h"
+#include "GLES-Render.h"
 
 #define PTM_RATIO 32        
 
@@ -13,6 +14,12 @@ public:
 	b2World *world; //物理世界
 
 	void initPysics();
+
+	void createPhysicalUnCross();
+
+	GLESDebugDraw *_debugDraw;
+
+	virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags);
 
 	static cocos2d::Scene* createScene();
 

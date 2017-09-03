@@ -25,7 +25,7 @@ public:
 
 	static void CreateUpdateUI();            //创建|刷新UI：金币时间等
 
-	static void tiledMapScroll(float delta); //地图滚动
+	static void tiledMapScroll(float delta, b2World *world); //地图滚动
 
 	static void createBackGround();          //背景图片
 

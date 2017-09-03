@@ -26,7 +26,7 @@ Character* Character::getInstance()
 
 Character::Character()
 {
-	this->speed = 300;
+	this->speed = 1;
 
 	this->jump_height_small = 10;
 	this->jump_height_big = 10;
@@ -83,7 +83,7 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 	auto pos = sp_man->getPosition();
 	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                     //转向
 
-	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + 0.1, body_man->GetPosition().y), delta);
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus*0.1 * speed, body_man->GetPosition().y), delta);
 
 	//sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * speed, pos.y));  //移动
 }
@@ -108,8 +108,7 @@ void Character::jump()
 	//}
 	characterStatus.InSky = true;
 
-	auto ac_jump = JumpBy::create(0.5f, Point(0, 0), 40, 1);
-	b2Vec2(0, 40);
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 100 / PTM_RATIO), 0);
 }
 
 void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对象）

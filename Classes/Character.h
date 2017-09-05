@@ -9,7 +9,6 @@
 #define __CHARACTER_H__
 
 #include "cocos2d.h" 
-#include "Box2D\Box2D.h"
 USING_NS_CC;
 
 class Character : public Node
@@ -32,8 +31,6 @@ public:
 	void set_speed(int newSpeed);
 
 	Sprite3D * sp_man;  //3D精灵
-
-	b2Body * body_man;  //3D精灵刚体
 
 
 	struct CharacterStatus       //角色状态

@@ -15,9 +15,6 @@ USING_NS_CC;
 using namespace std;
 using namespace CocosDenshion;
 
-#define PTM_RATIO 32
-
-
 //定义：显示尺寸
 Size visSize;
 
@@ -211,7 +208,7 @@ void Controler::CreateUpdateUI()
 
 }
 
-void Controler::tiledMapScroll(float delta, b2World *world)
+void Controler::tiledMapScroll(float delta)
 {
 	auto pos_Character = CharaIns->sp_man->getPosition();
 
@@ -221,21 +218,14 @@ void Controler::tiledMapScroll(float delta, b2World *world)
 		CharaIns->set_speed(0);    //角色不移动
 
 		//层移动
-		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-1 * delta * 280, 0));
+		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-delta * 280, 0));
 		Layer_TitledMap->runAction(ac_TitledMap);
-
-
-
-
-
 
 		auto ac_Layer_BG = MoveBy::create(delta * 0.8f, Point(-delta * 30, 0));
 		Layer_BG->runAction(ac_Layer_BG);
-
-
 	}
 	else
-		CharaIns->set_speed(1);  //角色真实移动
+		CharaIns->set_speed(300);  //角色真实移动
 }
 
 void Controler::createBackGround()  //创建游戏背景

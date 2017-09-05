@@ -82,7 +82,7 @@ void TestScene::initPysics() //初始物理引擎
 
 	Layer_BG->setVisible(false);
 	Layer_Control->setVisible(false);
-	//Layer_TitledMap->setVisible(false);
+	Layer_TitledMap->setVisible(false);
 }
 
 void TestScene::createPhysicalUnCross()  //物理不可通行层
@@ -206,8 +206,8 @@ bool TestScene::init()
 	bodydef.type = b2_dynamicBody;
 	bodydef.position.Set(Character::getInstance()->sp_man->getPosition().x / PTM_RATIO, Character::getInstance()->sp_man->getPosition().y / PTM_RATIO);
 
-	auto body_man = world->CreateBody(&bodydef);
-	body_man->SetUserData(Character::getInstance()->sp_man);
+	Character::getInstance()->body_man = world->CreateBody(&bodydef);
+	Character::getInstance()->body_man->SetUserData(Character::getInstance()->sp_man);
 
 	//PhysicsEditor:不规则刚体数据
 	b2Vec2 points[27] = {
@@ -229,9 +229,8 @@ bool TestScene::init()
 	fixturedef.density = 1.0f;   //密度
 	fixturedef.friction = 0.2f;   //摩擦
 	fixturedef.shape = &shape_body_man;
-	body_man->CreateFixture(&fixturedef);
-
-	Character::getInstance()->body_man = body_man;  //刚体传入Character
+	Character::getInstance()->body_man->CreateFixture(&fixturedef);
+	Character::getInstance()->body_man->SetFixedRotation(true);  //刚体不模拟旋转
 
 
 

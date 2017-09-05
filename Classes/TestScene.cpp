@@ -30,21 +30,17 @@ extern Size visSize;
 void TestScene::initPysics() //初始物理引擎
 {
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+	gravity.Set(0.0f, -50.0f);
 	world = new b2World(gravity);
 
-	// Do we want to let bodies sleep?
 	world->SetAllowSleeping(false);  //否则穿透后变为静态刚体
 
 	world->SetContinuousPhysics(true);
 
-	// Define the ground body.
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(0, 0); // bottom-left corner
 
-									  // Call the body factory which allocates memory for the ground body
-									  // from a pool and creates the ground box shape (also from a pool).
-									  // The body is also added to the world.
+					
 	b2Body* groundBody = world->CreateBody(&groundBodyDef);
 
 	// Define the ground box shape.
@@ -67,6 +63,7 @@ void TestScene::initPysics() //初始物理引擎
 	groundBody->CreateFixture(&groundBox, 0);
 
 
+	//遮罩
 	_debugDraw = new GLESDebugDraw(32);
 
 	uint32 flags = 0;
@@ -82,7 +79,7 @@ void TestScene::initPysics() //初始物理引擎
 
 	Layer_BG->setVisible(false);
 	Layer_Control->setVisible(false);
-	Layer_TitledMap->setVisible(false);
+	//Layer_TitledMap->setVisible(false);
 }
 
 void TestScene::createPhysicalUnCross()  //物理不可通行层
@@ -94,12 +91,16 @@ void TestScene::createPhysicalUnCross()  //物理不可通行层
 
 	for (auto i : vec)
 	{
-		float obj_X = i.asValueMap().at("x").asFloat();   //得到对象的x，y坐标
-		float obj_Y = i.asValueMap().at("y").asFloat();
-
-
+		
 		float obj_width = i.asValueMap().at("width").asFloat();
 		float obj_height = i.asValueMap().at("height").asFloat();
+
+ /*这里是个巨坑：取到的瓦片地图中对象的坐标是该对象锚点为（0,0）时的坐标，而box2D在场景中绘制刚体时，会将刚才得到的坐标以锚点为（0.5, 0.5）进行绘制，
+且无法改变刚体锚点，所以，需要将得到的坐标转为锚点是（0.5, 0.5）时的坐标，故将坐标的x,y，各自挪动其长度的一半，即可完成坐标转换，使得刚体与瓦片重合*/
+
+		float obj_X = i.asValueMap().at("x").asFloat() + obj_width/2;
+		float obj_Y = i.asValueMap().at("y").asFloat() + obj_height/2;  
+		
 
 
 		CCLOG("Run to createPhysicalUnCross x:%f, y:%f, width: %f, height: %f", obj_X, obj_Y, obj_width, obj_height);
@@ -107,7 +108,7 @@ void TestScene::createPhysicalUnCross()  //物理不可通行层
 
 		b2BodyDef body_def;
 		body_def.type = b2_staticBody;
-		body_def.position.Set((obj_X) / PTM_RATIO + 53/PTM_RATIO, (obj_Y) / PTM_RATIO + 53 / PTM_RATIO);
+		body_def.position.Set(obj_X / PTM_RATIO, obj_Y / PTM_RATIO);
 		auto _pyhsicalBody = world->CreateBody(&body_def);
 
 

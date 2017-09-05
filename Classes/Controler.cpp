@@ -295,7 +295,12 @@ void Controler::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		break;
 	case cocos2d::EventKeyboard::KeyCode::KEY_F3:   //ÓÎÏ·ÔÝÍ£²âÊÔ
 		Controler::GamePauseAndSettings();
+	case cocos2d::EventKeyboard::KeyCode::KEY_F5:   //ÍßÆ¬µØÍ¼ÏòÉÏ1ÒÆ¶¯ÏñËØ
+	{
+		auto pos = Layer_TitledMap->getPosition();
+		Layer_TitledMap->setPosition(Vec2(pos.x, ++pos.y));
 		break;
+	}		
 	default:
 		break;
 	}

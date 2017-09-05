@@ -6,6 +6,8 @@
 */
 
 #include "Character.h"
+#include "TestScene.h"
+#include "Box2D\Box2D.h"
 
 bool moveAnimtionFinished = true;       //移动动画播放完成
 bool isSporting = false;                //角色是否处于运动中
@@ -24,7 +26,7 @@ Character* Character::getInstance()
 
 Character::Character()
 {
-	this->speed = 300;
+	this->speed = 1;
 
 	this->jump_height_small = 10;
 	this->jump_height_big = 10;
@@ -37,6 +39,7 @@ Character::Character()
 	auto ac_RotateTo = RotateTo::create(0.001f, Vec3(0, 90, 0));//设定旋转动作，操纵Sprite => 不能设置为0.f部分机型不执行
 
 	sp_man->runAction(ac_RotateTo);
+
 }
 
 Character::~Character()
@@ -79,7 +82,10 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 
 	auto pos = sp_man->getPosition();
 	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                     //转向
-	sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * speed, pos.y));  //移动
+
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus*0.1 * speed, body_man->GetPosition().y), delta);
+
+	//sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * speed, pos.y));  //移动
 }
 
 int Character::get_speed()
@@ -93,13 +99,16 @@ void Character::set_speed(int speed)
 
 void Character::jump()
 {
-	if (!characterStatus.InSky)  //判断角色状态
-	{
-		characterStatus.InSky = true;
+	//if (!characterStatus.InSky)  //判断角色状态
+	//{
+	//	characterStatus.InSky = true;
 
-		auto ac_jump = JumpBy::create(0.5f, Point(0, 0), 40, 1);
-		sp_man->runAction(ac_jump);
-	}
+	//	auto ac_jump = JumpBy::create(0.5f, Point(0, 0), 40, 1);
+	//	sp_man->runAction(ac_jump);
+	//}
+	characterStatus.InSky = true;
+
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 100 / PTM_RATIO), 0);
 }
 
 void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对象）

@@ -11,15 +11,15 @@ class TestScene : public cocos2d::Layer
 {
 public:
 
-	b2World *world; //物理世界
+	b2World *world;                //物理世界
 
-	void initPysics();
+	void initPysics();             //初始化物理世界
 
-	void createPhysicalUnCross();
+	void createPhysicalUnCross();  //根据瓦片地图创建相应刚体
 
-	GLESDebugDraw *_debugDraw;
+	GLESDebugDraw *_debugDraw;     //刚体遮罩
 
-	virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags);
+	virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags);  //刚体遮罩绘制
 
 	static cocos2d::Scene* createScene();
 

@@ -18,6 +18,9 @@ using namespace CocosDenshion;
 #define PTM_RATIO 32
 
 
+//定义：刚体容器 => 移动地图时遍历所有刚体并位移
+vector<b2Body *> vector_MapBody;
+
 //定义：显示尺寸
 Size visSize;
 
@@ -221,21 +224,21 @@ void Controler::tiledMapScroll(float delta, b2World *world)
 		CharaIns->set_speed(0);    //角色不移动
 
 		//层移动
-		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-1 * delta * 280, 0));
+		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-1 * delta * (6 * PTM_RATIO), 0));  //速度和角色之前速度“视觉上”一致=>速度+1
 		Layer_TitledMap->runAction(ac_TitledMap);
-
-
-
-
-
 
 		auto ac_Layer_BG = MoveBy::create(delta * 0.8f, Point(-delta * 30, 0));
 		Layer_BG->runAction(ac_Layer_BG);
 
+		//遍历地图：刚体=>移动
+		for (auto body : vector_MapBody)
+		{
+			body->SetTransform(b2Vec2(body->GetPosition().x - 6 * delta, body->GetPosition().y), delta);
+		}
 
 	}
 	else
-		CharaIns->set_speed(1);  //角色真实移动
+		CharaIns->set_speed(5);  //角色真实移动
 }
 
 void Controler::createBackGround()  //创建游戏背景

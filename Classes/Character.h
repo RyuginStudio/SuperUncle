@@ -27,9 +27,9 @@ public:
 
 	void initBeginPos(TMXTiledMap *map);   //初始化角色位置（通过瓦片地图）
 
-	int get_speed();
+	double get_speed();
 
-	void set_speed(int newSpeed);
+	void set_speed(double newSpeed);
 
 	Sprite3D * sp_man;  //3D精灵
 
@@ -52,7 +52,7 @@ private:
 
 	Character();
 
-	int speed; //移速
+	double speed; //移速
 
 	bool big_small; //大、小状态    初始为false => 体型：小
 

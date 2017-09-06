@@ -26,7 +26,7 @@ Character* Character::getInstance()
 
 Character::Character()
 {
-	this->speed = 1;
+	this->speed = 5;
 
 	this->jump_height_small = 10;
 	this->jump_height_big = 10;
@@ -81,18 +81,17 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 	}
 
 	auto pos = sp_man->getPosition();
-	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));                     //转向
+	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));  //转向
 
-	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus*0.1 * speed, body_man->GetPosition().y), delta);
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus * speed / PTM_RATIO, body_man->GetPosition().y), delta);  //移动
 
-	//sp_man->setPosition(Point(pos.x + speedPlus_minus * delta * speed, pos.y));  //移动
 }
 
-int Character::get_speed()
+double Character::get_speed()
 {
 	return this->speed;
 }
-void Character::set_speed(int speed)
+void Character::set_speed(double speed)
 {
 	this->speed = speed;
 }
@@ -108,13 +107,13 @@ void Character::jump()
 	//}
 	characterStatus.InSky = true;
 
-	body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 100 / PTM_RATIO), 0);
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 180 / PTM_RATIO), 0);
 }
 
 void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对象）
 {
 	//创建一个存放对象的Group
-	TMXObjectGroup* objGroup = map->getObjectGroup("objects");  //objects表示瓦片地图对象层的名字
+	TMXObjectGroup* objGroup = map->getObjectGroup("character");  //character对象层
 	//加载PlayerPoint对象
 	ValueMap PlayerPoint = objGroup->getObject("PlayerPoint"); //获取对象组中的PlayerPoint对象
 

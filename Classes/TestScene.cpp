@@ -15,6 +15,9 @@ USING_NS_CC;
 using namespace std;
 using namespace CocosDenshion;
 
+
+extern vector<b2Body *> vector_MapBody;  //刚体容器
+
 Layer* Layer_BG;             //背景+云
 Layer* Layer_UI;             //金币+得分+时间
 Layer* Layer_Control;        //摇杆+按钮
@@ -40,7 +43,7 @@ void TestScene::initPysics() //初始物理引擎
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(0, 0); // bottom-left corner
 
-					
+
 	b2Body* groundBody = world->CreateBody(&groundBodyDef);
 
 	// Define the ground box shape.
@@ -82,48 +85,48 @@ void TestScene::initPysics() //初始物理引擎
 	//Layer_TitledMap->setVisible(false);
 }
 
-void TestScene::createPhysicalUnCross()  //物理不可通行层
+void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
 {
-	//创建一个存放physics层中所有对象的Group
-	TMXObjectGroup* objGroup = tiledMap->getObjectGroup("physics");
+	//获取所有层
+	auto Vec_objGroups = tiledMap->getObjectGroups();
 
-	auto vec = objGroup->getObjects();
-
-	for (auto i : vec)
+	for (auto i : Vec_objGroups)
 	{
-		
-		float obj_width = i.asValueMap().at("width").asFloat();
-		float obj_height = i.asValueMap().at("height").asFloat();
+		for (auto j : i->getObjects())
+		{
+			float obj_width = j.asValueMap().at("width").asFloat();
+			float obj_height = j.asValueMap().at("height").asFloat();
 
- /*这里是个巨坑：取到的瓦片地图中对象的坐标是该对象锚点为（0,0）时的坐标，而box2D在场景中绘制刚体时，会将刚才得到的坐标以锚点为（0.5, 0.5）进行绘制，
-且无法改变刚体锚点，所以，需要将得到的坐标转为锚点是（0.5, 0.5）时的坐标，故将坐标的x,y，各自挪动其长度的一半，即可完成坐标转换，使得刚体与瓦片重合*/
+			/*这里是个巨坑：取到的瓦片地图中对象的坐标是该对象锚点为（0,0）时的坐标，而box2D在场景中绘制刚体时，会将刚才得到的坐标以锚点为（0.5, 0.5）进行绘制，
+			且无法改变刚体锚点，所以，需要将得到的坐标转为锚点是（0.5, 0.5）时的坐标，故将坐标的x,y，各自挪动其长度的一半，即可完成坐标转换，使得刚体与瓦片重合*/
 
-		float obj_X = i.asValueMap().at("x").asFloat() + obj_width/2;
-		float obj_Y = i.asValueMap().at("y").asFloat() + obj_height/2;  
-		
-
-
-		CCLOG("Run to createPhysicalUnCross x:%f, y:%f, width: %f, height: %f", obj_X, obj_Y, obj_width, obj_height);
+			float obj_X = j.asValueMap().at("x").asFloat() + obj_width / 2;
+			float obj_Y = j.asValueMap().at("y").asFloat() + obj_height / 2;
 
 
-		b2BodyDef body_def;
-		body_def.type = b2_staticBody;
-		body_def.position.Set(obj_X / PTM_RATIO, obj_Y / PTM_RATIO);
-		auto _pyhsicalBody = world->CreateBody(&body_def);
+			CCLOG("Run to createPhysicalUnCross x:%f, y:%f, width: %f, height: %f", obj_X, obj_Y, obj_width, obj_height);
+
+
+			b2BodyDef body_def;
+			body_def.type = b2_staticBody;
+			body_def.position.Set(obj_X / PTM_RATIO, obj_Y / PTM_RATIO);
+			auto _pyhsicalBody = world->CreateBody(&body_def);
 
 
 
-		b2PolygonShape polygon;
-		polygon.SetAsBox(obj_width / PTM_RATIO / 2, obj_height / PTM_RATIO / 2);
-		b2FixtureDef fix_def;
-		fix_def.shape = &polygon;
+			b2PolygonShape polygon;
+			polygon.SetAsBox(obj_width / PTM_RATIO / 2, obj_height / PTM_RATIO / 2);
+			b2FixtureDef fix_def;
+			fix_def.shape = &polygon;
 
-		_pyhsicalBody->CreateFixture(&fix_def);
+			_pyhsicalBody->CreateFixture(&fix_def);
+
+			vector_MapBody.push_back(_pyhsicalBody); //将地图产生刚体添加至容器
+		}
 	}
 }
 
-
-void TestScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)  //刚体遮罩调试
+void TestScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)  //刚体调试=>遮罩
 {
 	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
 
@@ -149,7 +152,7 @@ bool TestScene::init()
 
 	visSize = Director::getInstance()->getVisibleSize();
 
-	
+
 
 	Layer_BG = Layer::create();
 	Layer_BG->setName("Layer_BG");
@@ -221,7 +224,7 @@ bool TestScene::init()
 		b2Vec2(11.00000 / PTM_RATIO,-38.00000 / PTM_RATIO), b2Vec2(-11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO),b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO),
 		b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(4.00000 / PTM_RATIO,-35.00000 / PTM_RATIO),
 		b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(12.00000 / PTM_RATIO,-12.00000 / PTM_RATIO) };
-	
+
 
 	b2PolygonShape shape_body_man;
 	shape_body_man.Set(points, 27);

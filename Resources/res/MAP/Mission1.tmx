@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="162" height="18" tilewidth="53" tileheight="53" nextobjectid="42">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-down" width="162" height="18" tilewidth="53" tileheight="53" nextobjectid="100">
  <tileset firstgid="1" name="PicBlock" tilewidth="53" tileheight="53" tilecount="176" columns="16">
   <image source="PicBlock.png" width="867" height="583"/>
   <tile id="0">
@@ -667,7 +667,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="169"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -2928,15 +2928,69 @@
    <tile gid="161"/>
   </data>
  </layer>
- <objectgroup name="objects">
-  <object id="21" name="PlayerPoint" x="106.667" y="373.667" width="53" height="53"/>
+ <objectgroup name="character">
+  <object id="21" name="PlayerPoint" x="106" y="371" width="53" height="53"/>
  </objectgroup>
- <objectgroup name="physics">
-  <object id="30" name="UnCross" x="0" y="848" width="3604" height="106"/>
-  <object id="33" name="question" x="371.031" y="636.063" width="53" height="53"/>
-  <object id="34" name="question" x="477.044" y="212.076" width="53" height="53"/>
-  <object id="35" name="tube" x="1168.2" y="744.214" width="103.667" height="101"/>
-  <object id="39" name="question" x="845.5" y="424.167" width="53" height="53"/>
-  <object id="41" name="tube" x="741.583" y="636" width="263.584" height="53.0833"/>
+ <objectgroup name="stoneUnCross">
+  <object id="30" name="stoneUnCross" x="0" y="848" width="3604" height="106"/>
+  <object id="65" name="stoneUnCross" x="1272" y="689" width="159" height="53"/>
+  <object id="66" name="stoneUnCross" x="1802" y="689" width="159" height="53"/>
+  <object id="67" name="stoneUnCross" x="3710" y="689" width="212" height="53"/>
+  <object id="68" name="stoneUnCross" x="4081" y="689" width="212" height="53"/>
+  <object id="70" name="stoneUnCross" x="4240" y="636" width="53" height="53"/>
+  <object id="71" name="stoneUnCross" x="4081" y="636" width="53" height="53"/>
+  <object id="72" name="stoneUnCross" x="3869" y="636" width="53" height="53"/>
+  <object id="73" name="stoneUnCross" x="3710" y="636" width="53" height="53"/>
+  <object id="74" name="stoneUnCross" x="5141" y="742" width="265" height="106"/>
+  <object id="76" name="stoneUnCross" x="5830" y="742" width="265" height="106"/>
+  <object id="77" name="stoneUnCross" x="5088" y="795" width="53" height="53"/>
+  <object id="78" name="stoneUnCross" x="6095" y="795" width="53" height="53"/>
+  <object id="79" name="stoneUnCross" x="4293" y="848" width="159" height="106"/>
+  <object id="80" name="stoneUnCross" x="4611" y="848" width="901" height="106"/>
+  <object id="81" name="stoneUnCross" x="5724" y="848" width="2862" height="106"/>
+  <object id="83" name="stoneUnCross" x="8403.36" y="592" width="181.613" height="132.083"/>
+  <object id="84" name="stoneUnCross" x="8479.74" y="724.599" width="106" height="123.508"/>
+  <object id="85" name="stoneUnCross" x="8003" y="795" width="53" height="53"/>
+  <object id="86" name="stoneUnCross" x="8003" y="265" width="53" height="53"/>
+  <object id="88" name="stoneUnCross" x="7420" y="583" width="265" height="265"/>
+  <object id="89" name="stoneUnCross" x="7526" y="477" width="159" height="106"/>
+  <object id="90" name="stoneUnCross" x="7208" y="795" width="53" height="53"/>
+  <object id="91" name="stoneUnCross" x="7261" y="742" width="159" height="106"/>
+  <object id="92" name="stoneUnCross" x="7473" y="530" width="53" height="53"/>
+  <object id="93" name="stoneUnCross" x="7314" y="689" width="106" height="53"/>
+  <object id="94" name="stoneUnCross" x="7367" y="636" width="53" height="53"/>
+  <object id="95" name="stoneUnCross" x="7579" y="424" width="106" height="53"/>
+  <object id="96" x="8384.18" y="592.182" width="18.7273" height="55.6364"/>
+  <object id="97" x="8361.09" y="680" width="42.3182" height="26.7273"/>
+  <object id="98" x="8375" y="707.25" width="28.5" height="16.75"/>
+ </objectgroup>
+ <objectgroup name="brick">
+  <object id="48" name="brick" x="742" y="636" width="53" height="53"/>
+  <object id="49" name="brick" x="848" y="636" width="53" height="53"/>
+  <object id="50" name="brick" x="954" y="636" width="53" height="53"/>
+ </objectgroup>
+ <objectgroup name="question">
+  <object id="33" name="question" x="371" y="636" width="53" height="53"/>
+  <object id="39" name="question" x="848" y="424" width="53" height="53"/>
+  <object id="44" name="question" x="794.167" y="636.167" width="53" height="53"/>
+  <object id="45" name="question" x="902.167" y="637.5" width="53" height="53"/>
+  <object id="46" name="question" x="2332.5" y="636" width="53" height="53"/>
+  <object id="47" name="question" x="2387" y="636" width="53" height="53"/>
+ </objectgroup>
+ <objectgroup name="tube">
+  <object id="35" name="tube" x="1166" y="742" width="106" height="106"/>
+  <object id="51" name="tube" x="1431" y="636" width="106" height="212"/>
+  <object id="52" name="tube" x="1696" y="636" width="106" height="212"/>
+  <object id="53" name="tube" x="1961" y="742" width="106" height="106"/>
+  <object id="54" name="tube" x="2756" y="742" width="106" height="106"/>
+  <object id="55" name="tube" x="3074" y="742" width="106" height="106"/>
+  <object id="56" name="tube" x="3498" y="742" width="106" height="106"/>
+  <object id="57" name="tube" x="5406" y="742" width="106" height="106"/>
+  <object id="58" name="tube" x="5724" y="742" width="106" height="106"/>
+  <object id="59" name="tube" x="6360" y="742" width="106" height="106"/>
+  <object id="60" name="tube" x="6572" y="742" width="106" height="106"/>
+  <object id="62" name="tube" x="6466" y="636" width="106" height="212"/>
+  <object id="63" name="tube" x="5512" y="0" width="106" height="477"/>
+  <object id="64" name="tube" x="5618" y="0" width="106" height="477"/>
  </objectgroup>
 </map>

@@ -218,24 +218,23 @@ void Controler::tiledMapScroll(float delta, b2World *world)
 {
 	auto pos_Character = CharaIns->sp_man->getPosition();
 
-	if (pos_Character.x >= visSize.width / 2 && CharaIns->characterStatus.MoveRight 
+	if (pos_Character.x >= visSize.width / 2 && CharaIns->characterStatus.MoveRight
 		&& Layer_TitledMap->getPosition().x >= visSize.width - MapSize.width + tiledSize.width * 1.5) //多+1.5块瓦宽度防黑边
 	{
-		CharaIns->set_speed(0);    //角色不移动
+		//角色不移动
+		CharaIns->set_speed(0);
 
-		//层移动
-		auto ac_TitledMap = MoveBy::create(delta * 0.8f, Point(-1 * delta * (6 * PTM_RATIO), 0));  //速度和角色之前速度“视觉上”一致=>速度+1
-		Layer_TitledMap->runAction(ac_TitledMap);
-
-		auto ac_Layer_BG = MoveBy::create(delta * 0.8f, Point(-delta * 30, 0));
-		Layer_BG->runAction(ac_Layer_BG);
+		//层移动：速度和角色之前速度“视觉上”一致 => 速度+1
+		auto pos_map = Layer_TitledMap->getPosition();
+		Layer_TitledMap->setPosition(Point(pos_map.x - delta * (6 * PTM_RATIO), pos_map.y));
+		auto pos_bg = Layer_BG->getPosition();
+		Layer_BG->setPosition(Point(pos_bg.x - delta * 20, pos_bg.y));
 
 		//遍历地图：刚体=>移动
 		for (auto body : vector_MapBody)
 		{
-			body->SetTransform(b2Vec2(body->GetPosition().x - 6 * delta, body->GetPosition().y), delta);
+			body->SetTransform(b2Vec2(body->GetPosition().x - 6 * delta, body->GetPosition().y), 0);
 		}
-
 	}
 	else
 		CharaIns->set_speed(5);  //角色真实移动
@@ -303,7 +302,7 @@ void Controler::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		auto pos = Layer_TitledMap->getPosition();
 		Layer_TitledMap->setPosition(Vec2(pos.x, ++pos.y));
 		break;
-	}		
+	}
 	default:
 		break;
 	}

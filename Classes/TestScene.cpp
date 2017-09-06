@@ -54,15 +54,15 @@ void TestScene::initPysics() //初始物理引擎
 	groundBody->CreateFixture(&groundBox, 0);
 
 	// top
-	groundBox.Set(b2Vec2(0 / PTM_RATIO, visSize.height / PTM_RATIO), b2Vec2(visSize.width / PTM_RATIO, visSize.height / PTM_RATIO));
+	groundBox.Set(b2Vec2(0 / PTM_RATIO, visSize.height * 2 / PTM_RATIO), b2Vec2(visSize.width / PTM_RATIO, visSize.height * 2 / PTM_RATIO));
 	groundBody->CreateFixture(&groundBox, 0);
 
 	// left
-	groundBox.Set(b2Vec2(0 / PTM_RATIO, 0 / PTM_RATIO), b2Vec2(0 / PTM_RATIO, visSize.height / PTM_RATIO));
+	groundBox.Set(b2Vec2(0 / PTM_RATIO, 0 / PTM_RATIO), b2Vec2(0 / PTM_RATIO, visSize.height * 2 / PTM_RATIO));
 	groundBody->CreateFixture(&groundBox, 0);
 
 	// right
-	groundBox.Set(b2Vec2(visSize.width / PTM_RATIO, 0), b2Vec2(visSize.width / PTM_RATIO, visSize.height / PTM_RATIO));
+	groundBox.Set(b2Vec2(visSize.width / PTM_RATIO, 0), b2Vec2(visSize.width / PTM_RATIO, visSize.height * 2 / PTM_RATIO));
 	groundBody->CreateFixture(&groundBox, 0);
 
 
@@ -80,9 +80,9 @@ void TestScene::initPysics() //初始物理引擎
 	world->SetDebugDraw(_debugDraw);
 
 
-	Layer_BG->setVisible(false);
-	Layer_Control->setVisible(false);
-	//Layer_TitledMap->setVisible(false);
+	/*layer_bg->setvisible(false);
+	layer_control->setvisible(false);
+	layer_titledmap->setvisible(false);*/
 }
 
 void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
@@ -151,7 +151,6 @@ bool TestScene::init()
 	}
 
 	visSize = Director::getInstance()->getVisibleSize();
-
 
 
 	Layer_BG = Layer::create();

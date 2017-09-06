@@ -8,6 +8,10 @@
 #include "Character.h"
 #include "TestScene.h"
 #include "Box2D\Box2D.h"
+#include "SimpleAudioEngine.h"
+
+using namespace CocosDenshion;
+
 
 bool moveAnimtionFinished = true;       //移动动画播放完成
 bool isSporting = false;                //角色是否处于运动中
@@ -83,7 +87,7 @@ void Character::move(int speedPlus_minus, float delta) //角色横向移动及动画
 	auto pos = sp_man->getPosition();
 	sp_man->setRotation3D(Vec3(0, speedPlus_minus * 90, 0));  //转向
 
-	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus * speed / PTM_RATIO, body_man->GetPosition().y), delta);  //移动
+	body_man->SetTransform(b2Vec2(body_man->GetPosition().x + speedPlus_minus * speed / PTM_RATIO, body_man->GetPosition().y), 0);  //移动
 
 }
 
@@ -98,16 +102,12 @@ void Character::set_speed(double speed)
 
 void Character::jump()
 {
-	//if (!characterStatus.InSky)  //判断角色状态
-	//{
-	//	characterStatus.InSky = true;
-
-	//	auto ac_jump = JumpBy::create(0.5f, Point(0, 0), 40, 1);
-	//	sp_man->runAction(ac_jump);
-	//}
-	characterStatus.InSky = true;
-
-	body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 180 / PTM_RATIO), 0);
+	if (true)//!characterStatus.InSky)  //判断角色状态
+	{
+		characterStatus.InSky = true;
+		body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 180 / PTM_RATIO), 0);
+		SimpleAudioEngine::getInstance()->playEffect("SE/jump.mp3");
+	}	
 }
 
 void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对象）

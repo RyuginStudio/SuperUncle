@@ -13,16 +13,6 @@ USING_NS_CC;
 //按键容器声明
 extern std::map<std::string, bool> map_keyPressed; //存放键盘按键状态
 
-
-//摇杆和托盘路径信息
-const std::string circlePath = "PICTURE/VirtualCircle.png";
-const std::string pointPath = "PICTURE/VirtualPoint.png";
-
-//按钮A和B的路径信息
-const std::string btnApath = "PICTURE/VirtualButtonA.png";
-const std::string btnBpath = "PICTURE/VirtualButtonB.png";
-
-
 //声明：层
 extern Layer* Layer_Control;
 
@@ -35,8 +25,8 @@ VirtualRockerAndButton *VirtualRockerAndButton::virtualRockerAndButton = nullptr
 
 VirtualRockerAndButton * VirtualRockerAndButton::getInstance()
 {
-	/*if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		return nullptr;*/
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return nullptr;
 
 	if (virtualRockerAndButton == nullptr)
 		virtualRockerAndButton = new VirtualRockerAndButton();
@@ -46,10 +36,10 @@ VirtualRockerAndButton * VirtualRockerAndButton::getInstance()
 
 VirtualRockerAndButton::VirtualRockerAndButton()
 {
-	//if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	//	return;
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
-	//摇杆、托盘
+		//摇杆、托盘
 	auto sp_VirtualRockerCircle = Sprite::create(circlePath);
 	sp_VirtualRockerCircle->setName("sp_VirtualCircle");
 	auto sp_VirtualRockerPoint = Sprite::create(pointPath);
@@ -61,7 +51,7 @@ VirtualRockerAndButton::VirtualRockerAndButton()
 	Layer_Control->addChild(sp_VirtualRockerCircle, 100);
 	Layer_Control->addChild(sp_VirtualRockerPoint, 100);
 
-    //按钮A、B
+	//按钮A、B
 	auto sp_BtnA = Sprite::create(btnApath);
 	sp_BtnA->setName("sp_BtnA");
 	auto sp_BtnB = Sprite::create(btnBpath);
@@ -76,87 +66,103 @@ VirtualRockerAndButton::VirtualRockerAndButton()
 //======================单例模式======================//
 
 
-bool VirtualRockerAndButton::onTouchBegan(Touch * tTouch, Event * eEvent)
+
+void VirtualRockerAndButton::onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event)
 {
-	/*if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		return false;*/
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
-	CCLOG("%f, %f", tTouch->getLocation().x, tTouch->getLocation().y);
-
-	//按钮A按下 => 跳跃
-	if (Layer_Control->getChildByName("sp_BtnA")->getBoundingBox().containsPoint(tTouch->getLocation()))
+	for (auto touch : touches)
 	{
-		Character::getInstance()->jump();
+		//按钮A按下 => 跳跃
+		if (Layer_Control->getChildByName("sp_BtnA")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			Character::getInstance()->jump();
+			btnAtouchID = touch->getID();
+		}
+
+		else if (Layer_Control->getChildByName("sp_VirtualCircle")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			//摇杆移动
+			Layer_Control->getChildByName("sp_VirtualPoint")->setPosition(touch->getLocation());
+			rockerTouchID = touch->getID();
+			admitRockerMove = true;
+		}
 	}
 
-	//触摸起始点在摇杆范围内才返回true
-	if (Layer_Control->getChildByName("sp_VirtualCircle")->getBoundingBox().containsPoint(tTouch->getLocation()))
-	{
-		//摇杆移动
-		Layer_Control->getChildByName("sp_VirtualPoint")->setPosition(tTouch->getLocation());
-		return true;
-	}
-	else
-		return false; //false会导致下二函数不执行
 }
 
-void VirtualRockerAndButton::onTouchesMoved(Touch * tTouch, Event * eEvent)
+void VirtualRockerAndButton::onTouchesMoved(const std::vector<Touch*>& touches, Event *unused_event)
 {
-	/*if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		return;*/
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
-	auto Nowdistance = std::abs(tTouch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //当前触摸点与托盘圆心距离
-
-	auto maxDistance = 130;   //摇杆与托盘最大距离
-
-	if (Nowdistance < maxDistance) //手指滑出托盘
+	for (auto touch : touches)
 	{
-		Layer_Control->getChildByName("sp_VirtualPoint")->setPosition(tTouch->getLocation());
-	}
-	else //滑出托盘
-	{
-		auto Distancedifferent = Nowdistance - 130;  //手指超出额定90的距离差
-
-		if (Distancedifferent > 0)  //确定滑出
+		if (admitRockerMove == true && touch->getID() == rockerTouchID)
 		{
-			Nowdistance = std::abs(tTouch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //再取值
+			auto Nowdistance = std::abs(touch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //当前触摸点与托盘圆心距离
 
-			auto outSideA = std::abs(tTouch->getLocation().y - Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y);  //外部三角形A边的高度
+			auto maxDistance = 130;   //摇杆与托盘最大距离
 
-			auto sinAngle = outSideA / Nowdistance;  //三角函数求出斜边与直角边（A边）的比例
+			if (Nowdistance < maxDistance) //手指滑出托盘
+			{
+				Layer_Control->getChildByName("sp_VirtualPoint")->setPosition(touch->getLocation());
+			}
+			else //滑出托盘
+			{
+				auto Distancedifferent = Nowdistance - 130;  //手指超出额定90的距离差
 
-			auto inSideA = sinAngle * 130;  //因为共享一个角，同一个比例，可求小三角形（A边）的高度
+				if (Distancedifferent > 0)  //确定滑出
+				{
+					Nowdistance = std::abs(touch->getLocation().getDistance(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition()));  //再取值
 
-			auto inSideB = std::sqrt(130 * 130 - inSideA*inSideA);  //勾股定理
+					auto outSideA = std::abs(touch->getLocation().y - Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y);  //外部三角形A边的高度
 
-			if (tTouch->getLocation().y < Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y)  //摇杆托盘也有其“坐标系”，原点为正中心
-				inSideA *= -1;
-			if (tTouch->getLocation().x < Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().x)
-				inSideB *= -1;
+					auto sinAngle = outSideA / Nowdistance;  //三角函数求出斜边与直角边（A边）的比例
+
+					auto inSideA = sinAngle * 130;  //因为共享一个角，同一个比例，可求小三角形（A边）的高度
+
+					auto inSideB = std::sqrt(130 * 130 - inSideA*inSideA);  //勾股定理
+
+					if (touch->getLocation().y < Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y)  //摇杆托盘也有其“坐标系”，原点为正中心
+						inSideA *= -1;
+					if (touch->getLocation().x < Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().x)
+						inSideB *= -1;
 
 
-			//摇杆的最终坐标要在圆盘的原点坐标基础上加
-			Layer_Control->getChildByName("sp_VirtualPoint")
-				->setPosition(Vec2(inSideB + Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().x, inSideA + Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y));
+					//摇杆的最终坐标要在圆盘的原点坐标基础上加
+					Layer_Control->getChildByName("sp_VirtualPoint")
+						->setPosition(Vec2(inSideB + Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().x, inSideA + Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().y));
 
-			CCLOG("Nowdistance:%f, lengthA:%f, sinAngle:%f, x:%f, y:%f", Nowdistance, outSideA, sinAngle, inSideB, inSideA);
+					CCLOG("Nowdistance:%f, lengthA:%f, sinAngle:%f, x:%f, y:%f", Nowdistance, outSideA, sinAngle, inSideB, inSideA);
+				}
+			}
 		}
 	}
 }
 
-void VirtualRockerAndButton::onTouchEnded(Touch * tTouch, Event * eEvent)
+void VirtualRockerAndButton::onTouchesEnded(const std::vector<Touch*>& touches, Event *unused_event)
 {
-	/*if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		return;*/
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
-	Layer_Control->getChildByName("sp_VirtualPoint")
-		->setPosition(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition());
+	for (auto touch : touches)
+	{
+		if (touch->getID() == rockerTouchID)
+		{
+			Layer_Control->getChildByName("sp_VirtualPoint")
+				->setPosition(Layer_Control->getChildByName("sp_VirtualCircle")->getPosition());
+			admitRockerMove = false;
+		}	
+	}
+
 }
 
 void VirtualRockerAndButton::touchMoveControl()
 {
-	/*if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		return;*/
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		return;
 
 	if (Layer_Control->getChildByName("sp_VirtualPoint")->getPosition().x
 		- Layer_Control->getChildByName("sp_VirtualCircle")->getPosition().x == 0) //静止状态

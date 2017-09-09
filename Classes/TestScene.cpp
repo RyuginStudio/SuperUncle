@@ -259,10 +259,10 @@ bool TestScene::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerKeyboard, this);
 
 	//监听遥感按钮等触摸事件
-	auto eventListenerTouch = EventListenerTouchOneByOne::create();
-	eventListenerTouch->onTouchBegan = CC_CALLBACK_2(VirtualRockerAndButton::onTouchBegan, VirtualRockerAndButton::getInstance());
-	eventListenerTouch->onTouchMoved = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesMoved, VirtualRockerAndButton::getInstance());
-	eventListenerTouch->onTouchEnded = CC_CALLBACK_2(VirtualRockerAndButton::onTouchEnded, VirtualRockerAndButton::getInstance());
+	auto eventListenerTouch = EventListenerTouchAllAtOnce::create();
+	eventListenerTouch->onTouchesBegan = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesBegan, VirtualRockerAndButton::getInstance());
+	eventListenerTouch->onTouchesMoved = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesMoved, VirtualRockerAndButton::getInstance());
+	eventListenerTouch->onTouchesEnded = CC_CALLBACK_2(VirtualRockerAndButton::onTouchesEnded, VirtualRockerAndButton::getInstance());
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListenerTouch, this);
 
 	return true;
@@ -270,8 +270,8 @@ bool TestScene::init()
 
 void TestScene::update_per_second(float delta)
 {
-	//Controler::CreateUpdateUI(); //创建|刷新时间等UI  =>   后期得分方式改为：观察者模式
-	//Controler::createCloud();
+	Controler::CreateUpdateUI(); //创建|刷新时间等UI  =>   后期得分方式改为：观察者模式
+	Controler::createCloud();
 }
 
 void TestScene::update(float delta)
@@ -289,7 +289,7 @@ void TestScene::update(float delta)
 	}
 
 	Controler::tiledMapScroll(delta, world);    //地图滚动
-	//Controler::cloudPosControl();             //云朵位置控制
+	Controler::cloudPosControl();               //云朵位置控制
 	Controler::keyBoardControler(delta);        //键盘控制器进一步处理  =>  触控也调用
 	VirtualRockerAndButton::touchMoveControl(); //触摸行走控制
 }

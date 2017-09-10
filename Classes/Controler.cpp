@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "Controler.h"
 #include "SimpleAudioEngine.h"
+#include "SpriteBlur.h"
 
 USING_NS_CC;
 
@@ -272,6 +273,10 @@ void Controler::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		if (!Director::getInstance()->isPaused())
 		{
 			Layer_Control->setVisible(false);
+			Layer_UI->setVisible(false);
+
+			blurControl(); //模糊BG
+
 			Director::getInstance()->pause();
 			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 			SimpleAudioEngine::getInstance()->pauseAllEffects();
@@ -281,8 +286,10 @@ void Controler::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 		}
 		else
 		{
+			Layer_UI->setVisible(true);
 			Layer_Control->setVisible(true);
 			Layer_GameSettings->setVisible(false);
+			CharaIns->sp_man->setVisible(true);
 			Director::getInstance()->resume();
 			SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 			SimpleAudioEngine::getInstance()->resumeAllEffects();
@@ -374,18 +381,22 @@ void Controler::onAcceleration(Acceleration * acc, Event * unused_event)  //重力
 		{
 			if (!Director::getInstance()->isPaused())
 			{
+				Layer_UI->setVisible(false);
 				Layer_Control->setVisible(false);
 				Director::getInstance()->pause();
 				SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 				SimpleAudioEngine::getInstance()->pauseAllEffects();
 				SimpleAudioEngine::getInstance()->playEffect("SE/invalid.mp3");
 
+				blurControl(); //高斯模糊BG
 				Controler::GamePauseAndSettings(); //加载：暂停相关设置
 			}
 			else
 			{
+				Layer_UI->setVisible(true);
 				Layer_Control->setVisible(true);
 				Layer_GameSettings->setVisible(false);
+				CharaIns->sp_man->setVisible(true);
 				Director::getInstance()->resume();
 				SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 				SimpleAudioEngine::getInstance()->resumeAllEffects();
@@ -400,6 +411,27 @@ void Controler::GamePauseAndSettings() //暂停相关设置
 {
 	auto sp_test = Sprite::create("PICTURE/time_UI.png");
 	sp_test->setPosition(Vec2(visSize.width / 2, visSize.height / 2));
-	Layer_GameSettings->addChild(sp_test);
+	Layer_GameSettings->addChild(sp_test, 5);
 	Layer_GameSettings->setVisible(true);
+	CharaIns->sp_man->setVisible(false);
+}
+
+void Controler::blurControl()  //暂停后对BG高斯模糊
+{
+	//截取屏幕（不保存图片，不设置回调函数）  
+	auto textureScreen = SpriteBlur::ScreenShot(false, nullptr);
+
+	//方案：将模糊化后的精灵保存成一张图片  
+	//将截取的屏幕进行模糊化  
+	auto textureBlur = SpriteBlur::SpriteBlurer(textureScreen->getSprite());
+
+	//将模糊化后的图片保存成一张图片  
+	auto spriteBlur = Sprite::createWithSpriteFrame(textureBlur->getSprite()->getSpriteFrame());
+	spriteBlur->setPosition(Vec2(visSize.width, visSize.height));
+
+	spriteBlur->setRotationSkewX(180.0f);
+	spriteBlur->setPosition(Vec2(visSize.width / 2, visSize.height / 2));
+
+	//将此精灵覆盖在原有层之上，成为一个临时背景  
+	Layer_GameSettings->addChild(spriteBlur, 4);
 }

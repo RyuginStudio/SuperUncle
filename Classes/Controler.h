@@ -39,6 +39,8 @@ public:
 
 	static void GamePauseAndSettings();      //游戏暂停与设置
 
+	static void blurControl();     //SpriteBlur类 => 高斯模糊暂停后的背景
+
 private:
 
 	static Controler *controler;

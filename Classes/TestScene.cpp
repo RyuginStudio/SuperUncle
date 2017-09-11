@@ -80,9 +80,9 @@ void TestScene::initPysics() //初始物理引擎
 	world->SetDebugDraw(_debugDraw);
 
 
-	/*layer_bg->setvisible(false);
-	layer_control->setvisible(false);
-	layer_titledmap->setvisible(false);*/
+	Layer_BG->setVisible(false);
+	Layer_Control->setVisible(false);
+	Layer_TitledMap->setVisible(false);
 }
 
 void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
@@ -212,29 +212,23 @@ bool TestScene::init()
 	Character::getInstance()->body_man = world->CreateBody(&bodydef);
 	Character::getInstance()->body_man->SetUserData(Character::getInstance()->sp_man);
 
-	//PhysicsEditor:不规则刚体数据
-	b2Vec2 points[27] = {
-		b2Vec2(12.00000 / PTM_RATIO,30.00000 / PTM_RATIO), b2Vec2(12.00000 / PTM_RATIO,36.00000 / PTM_RATIO),b2Vec2(20.00000 / PTM_RATIO,34.00000 / PTM_RATIO),
-		b2Vec2(12.00000 / PTM_RATIO,36.00000 / PTM_RATIO),b2Vec2(12.00000 / PTM_RATIO,22.00000 / PTM_RATIO), b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO),
-		b2Vec2(-12.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(-20.00000 / PTM_RATIO,30.00000 / PTM_RATIO),b2Vec2(-4.00000 / PTM_RATIO,43.00000 / PTM_RATIO),
-		b2Vec2(9.00000 / PTM_RATIO,46.00000 / PTM_RATIO),b2Vec2(21.00000 / PTM_RATIO,17.00000 / PTM_RATIO), b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),
-		b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO), b2Vec2(12.00000 / PTM_RATIO,22.00000 / PTM_RATIO),b2Vec2(20.00000 / PTM_RATIO,23.00000 / PTM_RATIO),
-		b2Vec2(11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO),b2Vec2(-11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO), b2Vec2(4.00000 / PTM_RATIO,-35.00000 / PTM_RATIO),
-		b2Vec2(11.00000 / PTM_RATIO,-38.00000 / PTM_RATIO), b2Vec2(-11.00000 / PTM_RATIO,-46.00000 / PTM_RATIO),b2Vec2(-8.00000 / PTM_RATIO,9.00000 / PTM_RATIO),
-		b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(4.00000 / PTM_RATIO,-35.00000 / PTM_RATIO),
-		b2Vec2(6.00000 / PTM_RATIO,-17.00000 / PTM_RATIO), b2Vec2(5.00000 / PTM_RATIO,7.00000 / PTM_RATIO),b2Vec2(12.00000 / PTM_RATIO,-12.00000 / PTM_RATIO) };
-
+	//角色刚体信息
+	b2Vec2 points[4] = {
+		b2Vec2(-26.50000 / PTM_RATIO, -46.00000 / PTM_RATIO),
+		b2Vec2(-26.50000 / PTM_RATIO, 46.00000 / PTM_RATIO),
+		b2Vec2(26.50000 / PTM_RATIO, 46.00000 / PTM_RATIO),
+		b2Vec2(26.50000 / PTM_RATIO, -46.00000 / PTM_RATIO)
+	};
 
 	b2PolygonShape shape_body_man;
-	shape_body_man.Set(points, 27);
+	shape_body_man.Set(points, 4);
 
 	b2FixtureDef fixturedef;
-	fixturedef.density = 1.0f;   //密度
+	fixturedef.density = 1.0f;    //密度
 	fixturedef.friction = 0.2f;   //摩擦
 	fixturedef.shape = &shape_body_man;
 	Character::getInstance()->body_man->CreateFixture(&fixturedef);
 	Character::getInstance()->body_man->SetFixedRotation(true);  //刚体不模拟旋转
-
 
 
 	//加载瓦片地图

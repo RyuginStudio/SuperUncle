@@ -80,9 +80,9 @@ void TestScene::initPysics() //初始物理引擎
 	world->SetDebugDraw(_debugDraw);
 
 
-	Layer_BG->setVisible(false);
+	/*Layer_BG->setVisible(false);
 	Layer_Control->setVisible(false);
-	Layer_TitledMap->setVisible(false);
+	Layer_TitledMap->setVisible(false);*/
 }
 
 void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
@@ -117,6 +117,7 @@ void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
 			b2PolygonShape polygon;
 			polygon.SetAsBox(obj_width / PTM_RATIO / 2, obj_height / PTM_RATIO / 2);
 			b2FixtureDef fix_def;
+			fix_def.restitution = 0.f;
 			fix_def.shape = &polygon;
 
 			_pyhsicalBody->CreateFixture(&fix_def);
@@ -214,10 +215,10 @@ bool TestScene::init()
 
 	//角色刚体信息
 	b2Vec2 points[4] = {
-		b2Vec2(-26.50000 / PTM_RATIO, -46.00000 / PTM_RATIO),
+		b2Vec2(-20.0000 / PTM_RATIO, -46.00000 / PTM_RATIO),
 		b2Vec2(-26.50000 / PTM_RATIO, 46.00000 / PTM_RATIO),
 		b2Vec2(26.50000 / PTM_RATIO, 46.00000 / PTM_RATIO),
-		b2Vec2(26.50000 / PTM_RATIO, -46.00000 / PTM_RATIO)
+		b2Vec2(20.0000 / PTM_RATIO, -46.00000 / PTM_RATIO)
 	};
 
 	b2PolygonShape shape_body_man;
@@ -226,6 +227,7 @@ bool TestScene::init()
 	b2FixtureDef fixturedef;
 	fixturedef.density = 1.0f;    //密度
 	fixturedef.friction = 0.2f;   //摩擦
+	fixturedef.restitution = 0.f; //弹性
 	fixturedef.shape = &shape_body_man;
 	Character::getInstance()->body_man->CreateFixture(&fixturedef);
 	Character::getInstance()->body_man->SetFixedRotation(true);  //刚体不模拟旋转

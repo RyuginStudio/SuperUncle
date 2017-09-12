@@ -8,6 +8,7 @@
 #include "Character.h"
 #include "Controler.h"
 #include "VirtualRockerAndButton.h"
+#include "ContactListener.h"
 
 
 USING_NS_CC;
@@ -79,10 +80,14 @@ void TestScene::initPysics() //初始物理引擎
 	_debugDraw->SetFlags(flags);
 	world->SetDebugDraw(_debugDraw);
 
-
-	/*Layer_BG->setVisible(false);
+	//显示遮罩需屏蔽层
+	Layer_BG->setVisible(false);
 	Layer_Control->setVisible(false);
-	Layer_TitledMap->setVisible(false);*/
+	Layer_TitledMap->setVisible(false);
+
+	//设置碰撞监听事件
+	contLis = new ContactListener();
+	world->SetContactListener(contLis);
 }
 
 void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
@@ -111,7 +116,6 @@ void TestScene::createPhysicalUnCross()  //根据瓦片地图创建相应刚体
 			body_def.type = b2_staticBody;
 			body_def.position.Set(obj_X / PTM_RATIO, obj_Y / PTM_RATIO);
 			auto _pyhsicalBody = world->CreateBody(&body_def);
-
 
 
 			b2PolygonShape polygon;
@@ -280,14 +284,14 @@ void TestScene::update(float delta)
 		{
 			auto sprite = (Sprite *)body->GetUserData();
 			sprite->setPosition(Vec2(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO));
-			//sprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle())); //不旋转
+			//sprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle())); //不模拟旋转
 		}
 	}
 
-	Controler::tiledMapScroll(delta, world);    //地图滚动
-	Controler::cloudPosControl();               //云朵位置控制
-	Controler::keyBoardControler(delta);        //键盘控制器进一步处理  =>  触控也调用
-	VirtualRockerAndButton::touchMoveControl(); //触摸行走控制
+	Controler::tiledMapScroll(delta, world);      //地图滚动
+	Controler::cloudPosControl();                 //云朵位置控制
+	Controler::keyBoardControler(delta);          //键盘控制器进一步处理  =>  触控也调用
+	VirtualRockerAndButton::touchMoveControl();   //触摸行走控制
 }
 
 TestScene::TestScene()
@@ -297,4 +301,5 @@ TestScene::TestScene()
 TestScene::~TestScene()
 {
 	CC_SAFE_DELETE(world);
+	CC_SAFE_DELETE(contLis);
 }

@@ -4,6 +4,7 @@
 #include "Box2D\Box2D.h"
 #include "Character.h"
 #include "GLES-Render.h"
+#include "ContactListener.h"
 
 #define PTM_RATIO 32        
 
@@ -12,6 +13,8 @@ class TestScene : public cocos2d::Layer
 public:
 
 	b2World *world;                //物理世界
+
+	ContactListener *contLis;      //碰撞检测
 
 	void initPysics();             //初始化物理世界
 

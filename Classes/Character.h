@@ -40,7 +40,7 @@ public:
 	{
 		bool MoveLeft = false;
 		bool MoveRight = false;
-		bool InSky = false;
+		bool OnGround = false;
 
 	}characterStatus;
 

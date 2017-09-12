@@ -102,10 +102,12 @@ void Character::set_speed(double speed)
 
 void Character::jump()
 {
-	if (true)//!characterStatus.InSky)  //判断角色状态
+	if (characterStatus.OnGround)  //判断角色状态
 	{
-		characterStatus.InSky = true;
-		body_man->SetTransform(b2Vec2(body_man->GetPosition().x, body_man->GetPosition().y + 180 / PTM_RATIO), 0);
+		auto force = b2Vec2(0, 7000);
+
+		body_man->ApplyForce(force, body_man->GetWorldCenter(), true);
+
 		SimpleAudioEngine::getInstance()->playEffect("SE/jump.mp3");
 	}	
 }
@@ -117,7 +119,7 @@ void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对
 	//加载PlayerPoint对象
 	ValueMap PlayerPoint = objGroup->getObject("PlayerPoint"); //获取对象组中的PlayerPoint对象
 
-	float posBegin_X = PlayerPoint.at("x").asFloat();  //得到对象的x，y坐标
+	float posBegin_X = PlayerPoint.at("x").asFloat();     //得到对象的x，y坐标
 	float posBegin_Y = PlayerPoint.at("y").asFloat();
 
 	sp_man->setPosition(Point(posBegin_X, posBegin_Y));   //设定角色初始化的位置

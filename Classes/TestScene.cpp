@@ -205,7 +205,7 @@ bool TestScene::init()
 	Director::getInstance()->setProjection(Director::Projection::_2D);
 
 	//角色初始化相关
-	Character::getInstance()->initBeginPos(tiledMap);
+	Character::getInstance()->initBeginPos();
 	Character::getInstance()->sp_man->setGlobalZOrder(1);
 	this->addChild(Character::getInstance()->sp_man);
 

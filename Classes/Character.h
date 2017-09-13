@@ -25,7 +25,7 @@ public:
 
 	void jump();    //角色跳动函数
 
-	void initBeginPos(TMXTiledMap *map);   //初始化角色位置（通过瓦片地图）
+	void initBeginPos();   //初始化角色位置
 
 	double get_speed();
 

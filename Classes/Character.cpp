@@ -102,7 +102,7 @@ void Character::set_speed(double speed)
 
 void Character::jump()
 {
-	if (characterStatus.OnGround)  //判断角色状态
+	if (true)//characterStatus.OnGround)  //判断角色状态
 	{
 		auto force = b2Vec2(0, 7000);
 
@@ -112,15 +112,7 @@ void Character::jump()
 	}	
 }
 
-void Character::initBeginPos(TMXTiledMap *map)  //初始化角色位置（通过瓦片地图对象）
+void Character::initBeginPos()  //初始化角色位置
 {
-	//创建一个存放对象的Group
-	TMXObjectGroup* objGroup = map->getObjectGroup("character");  //character对象层
-	//加载PlayerPoint对象
-	ValueMap PlayerPoint = objGroup->getObject("PlayerPoint"); //获取对象组中的PlayerPoint对象
-
-	float posBegin_X = PlayerPoint.at("x").asFloat();     //得到对象的x，y坐标
-	float posBegin_Y = PlayerPoint.at("y").asFloat();
-
-	sp_man->setPosition(Point(posBegin_X, posBegin_Y));   //设定角色初始化的位置
+	sp_man->setPosition(Point(350.6, 371)); 
 }
